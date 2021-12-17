@@ -25,11 +25,9 @@ public class Product {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Product{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", price=").append(price);
-        sb.append(", image=").append(image);
-        sb.append('}');
-        return sb.toString();
+        return "Product{" + "name='" + name + '\'' +
+                ", price=" + price +
+                ", image=" + image +
+                '}';
     }
 }
