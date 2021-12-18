@@ -51,26 +51,58 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         list = new ArrayList<>();
 
-        Log.d("test", url);
-        Thread thread = new Thread(new Runnable() {
+        getWebsite();
 
-            @Override
-            public void run() {
-                try  {
-                    //Your code goes here
-                    document = Jsoup.connect(url).get();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        Log.d("test", url);
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    document = Jsoup.connect(url).get();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
 
-        thread.start();
     }
 
-    void set(){
-//        Elements elements = document.select("div.WsMbG1c");
+    private void getWebsite() {
+        new Thread(() -> {
+            final StringBuilder builder = new StringBuilder();
 
+            try {
+                Document doc = Jsoup.connect("https://www.ssaurel.com/blog").get();
+                String title = doc.title();
+                Elements links = doc.select("a[href]");
+
+                builder.append(title).append("\n");
+
+                for (Element link : links) {
+                    builder.append("\n").append("Link : ").append(link.attr("href"))
+                            .append("\n").append("Text : ").append(link.text());
+                }
+            } catch (IOException e) {
+                builder.append("Error : ").append(e.getMessage()).append("\n");
+            }
+
+            runOnUiThread(() -> {
+                Log.d("jsoup", builder.toString());
+            });
+        }).start();
+    }
+
+
+
+
+
+
+
+
+    void set(){
+        Log.d("jsoup", String.valueOf(document));
+//        Elements elements = document.select("div.WsMbG1c");
+//
 //        for (Element e: elements){
 //            Log.d("jsoup", e.toString());
 //        }
