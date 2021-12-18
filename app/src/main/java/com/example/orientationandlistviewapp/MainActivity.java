@@ -8,12 +8,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,8 +37,10 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     ArrayList<Product> list;
     Document document;
+    EditText editText;
     String name = "samsung";
     String url = "https://play.google.com/store/search?q="  + name + "&c=apps&hl=en_US&gl=US";
+    CustomAdapter customAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     void ready() throws IOException, InterruptedException {
         listView = findViewById(R.id.listView);
         list = new ArrayList<>();
-
+        editText = findViewById(R.id.editTextTextPersonName3);
         getWebsite();
     }
 
@@ -73,16 +78,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-    void set() throws IOException {
+    void updateList(){
         Elements elements = document.select("div.WsMG1c");
-
-
-//        Drawable drawable;
-
+        list.clear();
         for (int i = 0; i < elements.size(); i++){
             int finalI = i;
             Thread thread = new Thread(() -> {
@@ -99,13 +97,48 @@ public class MainActivity extends AppCompatActivity {
             thread.start();
             while (thread.isAlive());
         }
+        for (int i = 0; i < list.size(); i++){
+            Log.d("99", list.get(i).toString());
+        }
+        customAdapter = new CustomAdapter(this, R.layout.adapter_layout, list);
+        listView.setAdapter(customAdapter);
+        customAdapter.notifyDataSetChanged();
 
+//        if (listvew!= null) {
+//            listvew.invalidateViews();
+//        }
+    }
 
-        listView.setAdapter(new CustomAdapter(this, R.layout.adapter_layout, list));
+    void set() throws IOException {
+        updateList();
     }
     
     void go(){
-        
+       editText.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+               name = s.toString();
+               String name = s.toString();
+               url = "https://play.google.com/store/search?q="  + name + "&c=apps&hl=en_US&gl=US";
+               try {
+                   getWebsite();
+                   updateList();
+
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
+               }
+           }
+
+           @Override
+           public void afterTextChanged(Editable s) {
+
+           }
+       });
     }
 
     class CustomAdapter extends ArrayAdapter<Product> {
@@ -119,6 +152,19 @@ public class MainActivity extends AppCompatActivity {
             this.xmlResource = resource;
             this.list = objects;
         }
+
+        void update(){
+            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            View adapterLayout = layoutInflater.inflate(xmlResource, null);
+            Button button = adapterLayout.findViewById(R.id.button);
+            TextView textView = adapterLayout.findViewById(R.id.textView);
+            ImageView imageView = adapterLayout.findViewById(R.id.imageView);
+
+            for (Product p: list){
+                textView.setText(p.getName());
+            }
+        }
+
 
         @NonNull
         @Override
@@ -136,6 +182,8 @@ public class MainActivity extends AppCompatActivity {
             textView.setText(product.getName());
             imageView.setImageDrawable(product.getImage());
 //            imageView.setImageResource(product.getImage());
+
+            Log.d("getView", textView.getText().toString());
 
 
             button.setOnClickListener(view -> {
