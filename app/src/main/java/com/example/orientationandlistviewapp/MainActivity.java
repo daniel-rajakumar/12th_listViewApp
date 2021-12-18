@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,27 +30,54 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     ListView listView;
     ArrayList<Product> list;
+    Document document;
+    String name = "samsung";
+    String url = "https://play.google.com/store/search?q="  + name + "&c=apps&hl=en_US&gl=US";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        ready();
-        set();
-        go();
+        try {
+            ready();
+            set();
+            go();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
-    void ready(){ }
-
-    void set(){
+    void ready() throws IOException {
         listView = findViewById(R.id.listView);
         list = new ArrayList<>();
 
+        Log.d("test", url);
+        Thread thread = new Thread(new Runnable() {
 
+            @Override
+            public void run() {
+                try  {
+                    //Your code goes here
+                    document = Jsoup.connect(url).get();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
+        thread.start();
+    }
 
-        list.add(new Product("one", 3, R.drawable.ic_launcher_background));
-        list.add(new Product("two", 8, R.drawable.ic_launcher_foreground));
+    void set(){
+//        Elements elements = document.select("div.WsMbG1c");
+
+//        for (Element e: elements){
+//            Log.d("jsoup", e.toString());
+//        }
+
+        for (int i = 0; i < 10; i++){
+            list.add(new Product(i+"", i*i, R.drawable.ic_launcher_background));
+        }
 
         listView.setAdapter(new CustomeAdapter(this, R.layout.adapter_layout, list));
     }
@@ -75,9 +109,16 @@ public class MainActivity extends AppCompatActivity {
             TextView textView = adapterLayout.findViewById(R.id.textView);
             ImageView imageView = adapterLayout.findViewById(R.id.imageView);
             Product product = list.get(position);
-            button.setText(product.getName());
+//            button.setText(product.getName());
+            button.setText("remove: ");
             textView.setText(product.getPrice() + "");
             imageView.setImageResource(product.getImage());
+
+
+            button.setOnClickListener(view -> {
+                list.remove(position);
+                notifyDataSetChanged();
+            });
 
             return adapterLayout;
         }
