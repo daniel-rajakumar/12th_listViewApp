@@ -1,11 +1,13 @@
 package com.example.orientationandlistviewapp;
 
+import android.graphics.drawable.Drawable;
+
 public class Product {
     private String name;
     private double price;
-    private int image;
+    private Drawable image;
 
-    Product(String name, double price, int image){
+    Product(String name, double price, Drawable image){
         this.name = name;
         this.price = price;
         this.image = image;
@@ -19,7 +21,7 @@ public class Product {
         return price;
     }
 
-    public int getImage() {
+    public Drawable getImage() {
         return image;
     }
 

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     ArrayList<Product> list;
     Document document;
-    String name = "samsung";
+    String name = "Samsung";
     String url = "https://play.google.com/store/search?q="  + name + "&c=apps&hl=en_US&gl=US";
 
     @Override
@@ -51,60 +55,19 @@ public class MainActivity extends AppCompatActivity {
         list = new ArrayList<>();
 
         getWebsite();
-
-
-
-//        Log.d("test", url);
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    document = Jsoup.connect(url).get();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-
     }
 
+//    Elements links = doc.select("WsMbG1c");
     private void getWebsite() throws InterruptedException {
         Thread thread = new Thread(() -> {
-            final StringBuilder builder = new StringBuilder();
-            Document doc = null;
-
             try {
-                doc = Jsoup.connect(url).get();
-                String title = doc.title();
-                Elements links = doc.select("WsMbG1c");
-
-                builder.append(title).append("\n");
-
-                for (Element link : links) {
-                    builder.append(link);
-//                    builder.append("\n").append(" : ").append(link.attr("href"))
-//                            .append("\n").append("Text : ").append(link.text());
-                }
+                document = Jsoup.connect(url).get();
             } catch (IOException e) {
-                builder.append("Error : ").append(e.getMessage()).append("\n");
+                e.printStackTrace();
             }
-
-            document = doc;
-//            runOnUiThread(() -> {
-//                document = finalDoc;
-//                Log.d("jsoup", document.title());
-//            });
         });
         thread.start();
-
         while (thread.isAlive());
-
-        Log.d("jsoup", thread.isAlive() + " -> " + document.title());
-//        Thread.sleep(10000);
-//
-//        Log.d("jsoup", document.title());
-
-
     }
 
 
@@ -114,17 +77,33 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    void set(){
-//        Log.d("jsoup", document));
-//        Elements elements = document.select("div.WsMbG1c");
-//
-//        for (Element e: elements){
-//            Log.d("jsoup", e.toString());
-//        }
+    void set() throws IOException {
+        Elements elements = document.select("div.WsMG1c");
 
-        for (int i = 0; i < 10; i++){
-            list.add(new Product(i+"", i*i, R.drawable.ic_launcher_background));
+
+//        Drawable drawable;
+
+        for (int i = 0; i < elements.size(); i++){
+            int finalI = i;
+            Thread thread = new Thread(() -> {
+                try {
+                    Elements test = document.select("img.T75of.QNCnCf");
+                    Element elements1 = document.select("img.T75of.QNCnCf").get(finalI * 3);
+//                    System.out.println("dani: " + elements1.attr("data-src"));
+                    System.out.println("dani1: " + elements1.attr("data-src"));
+                    String url = elements1.attr("data-src");
+                    URL myUrl = new URL(url);
+                    InputStream inputStream = (InputStream) myUrl.getContent();
+                    Drawable drawable = Drawable.createFromStream(inputStream, null);
+                    list.add(new Product(elements.get(finalI).text(), 1, drawable));
+                } catch (IOException ee) {
+                    ee.printStackTrace();
+                }
+            });
+            thread.start();
+            while (thread.isAlive());
         }
+
 
         listView.setAdapter(new CustomAdapter(this, R.layout.adapter_layout, list));
     }
@@ -158,13 +137,13 @@ public class MainActivity extends AppCompatActivity {
             Product product = list.get(position);
 //            button.setText(product.getName());
             button.setText("remove: ");
-            textView.setText(product.getPrice() + "");
-            imageView.setImageResource(product.getImage());
+            textView.setText(product.getName());
+            imageView.setImageDrawable(product.getImage());
+//            imageView.setImageResource(product.getImage());
 
 
             button.setOnClickListener(view -> {
                 list.remove(position);
-                Log.d("jsoup", document.title());
                 notifyDataSetChanged();
             });
 
