@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     ArrayList<Product> list;
     Document document;
-    String name = "Samsung";
+    String name = "samsung";
     String url = "https://play.google.com/store/search?q="  + name + "&c=apps&hl=en_US&gl=US";
 
     @Override
@@ -87,13 +87,9 @@ public class MainActivity extends AppCompatActivity {
             int finalI = i;
             Thread thread = new Thread(() -> {
                 try {
-                    Elements test = document.select("img.T75of.QNCnCf");
                     Element elements1 = document.select("img.T75of.QNCnCf").get(finalI * 3);
-//                    System.out.println("dani: " + elements1.attr("data-src"));
-                    System.out.println("dani1: " + elements1.attr("data-src"));
                     String url = elements1.attr("data-src");
-                    URL myUrl = new URL(url);
-                    InputStream inputStream = (InputStream) myUrl.getContent();
+                    InputStream inputStream = (InputStream) (new URL(url).getContent());
                     Drawable drawable = Drawable.createFromStream(inputStream, null);
                     list.add(new Product(elements.get(finalI).text(), 1, drawable));
                 } catch (IOException ee) {
@@ -136,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             ImageView imageView = adapterLayout.findViewById(R.id.imageView);
             Product product = list.get(position);
 //            button.setText(product.getName());
-            button.setText("remove: ");
+            button.setText("remove");
             textView.setText(product.getName());
             imageView.setImageDrawable(product.getImage());
 //            imageView.setImageResource(product.getImage());
