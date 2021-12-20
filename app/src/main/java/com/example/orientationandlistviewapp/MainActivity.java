@@ -93,13 +93,13 @@ public class MainActivity extends AppCompatActivity {
                 elements.get(0).select(".pf5lIe").select("div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "")
 //                elements.get(0)
                         + "");
-        for (int i = 0; i < elements.size(); i++) {
-            int finalI = i;
+
+        for (Element element: elements){
             Thread thread = new Thread(() -> {
-                String name = elements.get(finalI).select(".WsMG1c.nnK0zc").text();
-                String author = elements.get(finalI).select(".KoLSrc").get(1).text();
-                String rating = elements.get(finalI).select(".pf5lIe").select("div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "");
-                String image = elements.get(finalI).select(".T75of.QNCnCf").get(0).attr("data-src");
+                String name = element.select(".WsMG1c.nnK0zc").text();
+                String author = element.select(".KoLSrc").get(1).text();
+                String rating = element.select(".pf5lIe").select("div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "").trim();
+                String image = element.select(".T75of.QNCnCf").get(0).attr("data-src");
                 try {
                     list.add(new Product(name, author, rating, image));
                 } catch (IOException e) {
