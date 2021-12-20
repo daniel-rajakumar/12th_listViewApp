@@ -2,17 +2,23 @@ package com.example.orientationandlistviewapp;
 
 import android.graphics.drawable.Drawable;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
 public class Product {
     private String name;
     private String author;
-    private double rating;
+    private String rating;
     private Drawable image;
 
-    Product(String name, String author, double rating, Drawable image){
+    Product(String name, String author, String rating, String imageUrl) throws IOException {
         this.name = name;
         this.author = author;
-        this.rating = rating;
-        this.image = image;
+        this.rating = (rating.equals("")) ? "N/A": rating;
+
+        InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
+        this.image = Drawable.createFromStream(inputStream, null);
     }
 
     public String getName() {
@@ -23,7 +29,7 @@ public class Product {
         return author;
     }
 
-    public double getRating() {
+    public String getRating() {
         return rating;
     }
 

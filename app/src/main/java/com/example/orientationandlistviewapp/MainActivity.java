@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     Document document;
     EditText editText;
     Button button;
-    String name = "samsung";
+    String name = "games";
     String url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
 
     @Override
@@ -79,36 +79,28 @@ public class MainActivity extends AppCompatActivity {
         while (thread.isAlive()) ;
     }
 
-
-    void updateList() {
+    void updateList(){
         list.clear();
-        Elements elementsName = document.select("div.WsMG1c");
-        Elements elementsRating = document.select("div.pf5lIe");
-        Elements elementsAuthor = document.select("div.KoLSrc");
-        Elements elementsImage = document.select("img.T75of.QNCnCf");
+        Elements elements = document.select("div.Vpfmgd");
+//        Elements elementsName = elements.select("div.WsMG1c.nnK0zc");
+//        Elements elementsRating = document.select("div.pf5lIe");
+//        Elements elementsAuthor = document.select("div.KoLSrc");
+//        Elements elementsImage = elements.get(0).select(".T75of.QNCnCf").get(0).attr("data-src");
 
-        for (int i = 0; i < elementsName.size(); i++) {
+
+        Log.d("updateList\n",
+//                elements.get(0)
+                elements.get(0).select(".pf5lIe").select("div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "")
+//                elements.get(0)
+                        + "");
+        for (int i = 0; i < elements.size(); i++) {
             int finalI = i;
             Thread thread = new Thread(() -> {
+                String name = elements.get(finalI).select(".WsMG1c.nnK0zc").text();
+                String author = elements.get(finalI).select(".KoLSrc").get(1).text();
+                String rating = elements.get(finalI).select(".pf5lIe").select("div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "");
+                String image = elements.get(finalI).select(".T75of.QNCnCf").get(0).attr("data-src");
                 try {
-                    String url = elementsImage.get(finalI * 3).attr("data-src");
-                    InputStream inputStream = (InputStream) (new URL(url).getContent());
-
-//                    String name = elementsName.get(finalI).text();
-                    Log.d("98", "~~~~~~~~~~~~~~~~~\n " + finalI + "  \n" + elementsRating + "");
-//                    Log.d("size", elementsRating.size() + "" + elementsName.size());
-                    String name = elementsRating.get(finalI).select("div").attr("aria-label");
-
-
-//                    Log.d("label", elementsRating.select("div").attr("aria-label") + "");
-//                    Log.d("label", elementsRating.select("div").get(finalI).attr("aria-label") + "");
-//                    Log.d("label", elementsRating.get(finalI).select("div").attr("aria-label") + "");
-
-
-
-                    String author = elementsAuthor.get(finalI * 2).text();
-                    double rating = 1;
-                    Drawable image = Drawable.createFromStream(inputStream, null);
                     list.add(new Product(name, author, rating, image));
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -174,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
             TextView textView = adapterLayout.findViewById(R.id.textView);
             ImageView imageView = adapterLayout.findViewById(R.id.imageView);
             TextView textView1 = findViewById(R.id.textView6);
+            TextView textView2 = findViewById(R.id.textView3);
             LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
             Product product = list.get(position);
 //            button.setText(product.getName());
@@ -187,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 v.setBackgroundColor(Color.GREEN);
                 textView1.setText("By: " + product.getAuthor());
+                textView2.setText("Rating: " + product.getRating());
             });
 
 
