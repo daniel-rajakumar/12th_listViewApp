@@ -7,12 +7,14 @@ import java.io.InputStream;
 import java.net.URL;
 
 public class Product {
+    private int id;
     private String name;
     private String author;
     private String rating;
     private Drawable image;
 
-    Product(String name, String author, String rating, String imageUrl) throws IOException {
+    Product(int id, String name, String author, String rating, String imageUrl) throws IOException {
+        this.id = id;
         this.name = name;
         this.author = author;
         this.rating = (rating.equals("")) ? "N/A": rating;
@@ -27,6 +29,10 @@ public class Product {
 
     public String getAuthor() {
         return author;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getRating() {

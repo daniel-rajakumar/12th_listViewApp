@@ -35,6 +35,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     Document document;
     EditText editText;
     Button button;
-    String name = "games";
+    String name = "apple";
     String url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
 
     @Override
@@ -88,27 +89,37 @@ public class MainActivity extends AppCompatActivity {
 //        Elements elementsImage = elements.get(0).select(".T75of.QNCnCf").get(0).attr("data-src");
 
 
-        Log.d("updateList\n",
+//        Log.d("updateList\n",
 //                elements.get(0)
-                elements.get(0).select(".pf5lIe").select("div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "")
-//                elements.get(0)
-                        + "");
+//                        + "");
 
+
+        int count = 0;
         for (Element element: elements){
+            count++;
+            int finalCount = count;
             Thread thread = new Thread(() -> {
                 String name = element.select(".WsMG1c.nnK0zc").text();
                 String author = element.select(".KoLSrc").get(1).text();
-                String rating = element.select(".pf5lIe").select("div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "").trim();
+                String rating = element.select(".pf5lIe div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "").trim();
                 String image = element.select(".T75of.QNCnCf").get(0).attr("data-src");
-                try {
-                    list.add(new Product(name, author, rating, image));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                String url = String.format("https://play.google.com%s&hl=en_US&gl=US", element.select(".wXUyZd a").attr("href"));
+                final Document[] doc = new Document[1];
+
+                Thread thread1 = new Thread(() -> {
+                    try {
+                        doc[0] = Jsoup.connect(url).get();
+                        list.add(new Product(finalCount, name, author, rating, image));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                thread1.start();
             });
             thread.start();
-            while (thread.isAlive()) ;
         }
+        while (list.size() < elements.size());
+        list.sort(Comparator.comparingInt(Product::getId));
         listView.setAdapter(new CustomAdapter(this, R.layout.adapter_layout, list));
     }
 
@@ -170,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
             Product product = list.get(position);
 //            button.setText(product.getName());
-            button.setText("remove");
             textView.setText(product.getName());
             imageView.setImageDrawable(product.getImage());
 
@@ -179,7 +189,9 @@ public class MainActivity extends AppCompatActivity {
                     parent.getChildAt(i).setBackgroundColor(Color.WHITE);
                 }
                 v.setBackgroundColor(Color.GREEN);
-                textView1.setText("By: " + product.getAuthor());
+                String author = product.getAuthor();
+                if (author.length() > 35) author = author.substring(0, 32) + "...";
+                textView1.setText("By: " + author);
                 textView2.setText("Rating: " + product.getRating());
             });
 
