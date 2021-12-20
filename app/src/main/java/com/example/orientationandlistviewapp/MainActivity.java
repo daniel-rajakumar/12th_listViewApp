@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -40,21 +41,30 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ListView listView;
-    ArrayList<Product> list;
+    ArrayList list;
     Document document;
     EditText editText;
     Button button;
     String name = "news";
     String url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
+    Bundle savedInstanceState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.savedInstanceState = savedInstanceState;
         try {
-            ready();
-            set();
-            go();
+            if (savedInstanceState == null){
+                ready();
+//                set();
+                go();
+            } else {
+                _ready();
+//                _set();
+                _go();
+
+            }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -65,8 +75,28 @@ public class MainActivity extends AppCompatActivity {
         list = new ArrayList<>();
         editText = findViewById(R.id.editTextTextPersonName3);
         button = findViewById(R.id.button3);
+
+        Log.d("list", list.toString());
+
         getWebsite();
     }
+
+    void _ready() throws IOException, InterruptedException {
+        listView = findViewById(R.id.listView);
+        list = (ArrayList) savedInstanceState.get("key");
+        editText = findViewById(R.id.editTextTextPersonName3);
+        button = findViewById(R.id.button3);
+
+        Log.d("list", list.toString());
+
+//        getWebsite();
+//        updateList();
+
+        listView.setAdapter(new CustomAdapter(this, R.layout.adapter_layout, list));
+
+    }
+
+
 
     private void getWebsite() throws InterruptedException {
         Thread thread = new Thread(() -> {
@@ -120,9 +150,31 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(new CustomAdapter(this, R.layout.adapter_layout, list));
     }
 
-    void set() throws IOException {
-//        updateList();
+    void _set() throws IOException {
+        updateList();
     }
+
+
+    void set() throws IOException {
+        updateList();
+    }
+
+
+    void _go() {
+        button.setOnClickListener(v -> {
+            button.setText("Loading");
+            name = editText.getText().toString();
+            url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
+            try {
+                getWebsite();
+                updateList();
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
+            button.setText("Done");
+        });
+    }
+
 
     void go() {
         button.setOnClickListener(v -> {
@@ -201,6 +253,20 @@ public class MainActivity extends AppCompatActivity {
 
             return adapterLayout;
         }
+
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelableArrayList("key", (ArrayList<? extends Parcelable>) list);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Nullable
+    @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return list;
     }
 }
 
