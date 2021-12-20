@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     Document document;
     EditText editText;
     Button button;
-    String name = "samsung";
+    String name = "news";
     String url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
 
     @Override
@@ -71,9 +71,7 @@ public class MainActivity extends AppCompatActivity {
     private void getWebsite() throws InterruptedException {
         Thread thread = new Thread(() -> {
             try {
-                Log.d("110 start", " -> title");
                 document = Jsoup.connect(url).get();
-                Log.d("110 start", " -> " + document.title());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -82,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         while (thread.isAlive()) ;
     }
 
-    void updateList(){
+    void updateList() throws IOException {
         list.clear();
         Elements elements = document.select("div.Vpfmgd");
 //        Elements elementsName = elements.select("div.WsMG1c.nnK0zc");
@@ -96,22 +94,22 @@ public class MainActivity extends AppCompatActivity {
 //                        + "");
 
 
+//        Log.d("size", elements.size() + "");
         int count = 0;
         for (Element element: elements){
-            count++;
-            int finalCount = count;
-            String name = element.select(".WsMG1c.nnK0zc").text();
-            String author = element.select(".KoLSrc").get(1).text();
-            String rating = element.select(".pf5lIe div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "").trim();
-            String image = element.select(".T75of.QNCnCf").get(0).attr("data-src");
+            int id = ++count;
+//            String name = element.select(".WsMG1c.nnK0zc").text();
+//            String author = element.select(".KoLSrc").get(1).text();
+//            String rating = element.select(".pf5lIe div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "").trim();
+//            String image = element.select(".T75of.QNCnCf").get(0).attr("data-src");
             String url = String.format("https://play.google.com%s&hl=en_US&gl=US", element.select(".wXUyZd a").attr("href"));
-
+//            Log.d("url", id + " " + url);
             new Thread(() -> {
                 try {
-                    Log.d("110 start", finalCount + " -> " + document.title());
-                    Document document = Jsoup.connect(url).get();
-                    Log.d("110 end", finalCount + " -> " +document.title());
-                    list.add(new Product(finalCount, document, name, author, rating, image));
+//                    Log.d("count", id + " -> \t start...  " + url);
+                    Document doc = Jsoup.connect(url).get();
+//                    Log.d("count", id + " -> \t ...done   " + url);
+                    list.add(new Product(id, doc));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -137,7 +135,11 @@ public class MainActivity extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            updateList();
+            try {
+                updateList();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             button.setText("Done");
         });
     }
@@ -182,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
             Product product = list.get(position);
 //            button.setText(product.getName());
-            textView.setText(product.getDoc().title());
+            textView.setText(product.getName());
             imageView.setImageDrawable(product.getImage());
 
             linearLayout.setOnClickListener(v -> {

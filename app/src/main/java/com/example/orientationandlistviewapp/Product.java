@@ -1,9 +1,11 @@
 package com.example.orientationandlistviewapp;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,15 +19,44 @@ public class Product {
     private String rating;
     private Drawable image;
 
-    Product(int id, Document doc, String name, String author, String rating, String imageUrl) throws IOException {
-        this.id = id;
-        this.doc = doc;
-        this.name = name;
-        this.author = author;
-        this.rating = (rating.equals("")) ? "N/A": rating;
 
-        InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
-        this.image = Drawable.createFromStream(inputStream, null);
+    Product(int id, Document doc) throws IOException {
+        try {
+            // id
+            this.id = id;
+
+            // doc
+            this.doc = doc;
+            Elements elements = doc.select("main.LXrl4c");
+
+            String line = "";
+
+//            for (int i = 0; i < 1_000; i++) line += "~~~~~~~~~~~~~~~~~~~~~~~\n";
+//            line += "\n";
+//            Log.d("product\n",
+//                    id + " " + line +
+//                     elements.select("a.hrTbp.R8zArc").text()
+//
+//            );
+//
+            // name
+            this.name = elements.select("h1.AHFaub").text();
+
+            // author
+            this.author = elements.select("a.hrTbp.R8zArc").get(0).text();
+
+            // rating
+            this.rating = elements.select(".pf5lIe div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "").trim();
+            this.rating = (this.rating.equals("")) ? "N/A": this.rating;
+
+            //image
+            String imageUrl = elements.select(".xSyT2c img").attr("src");
+            InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
+            this.image = Drawable.createFromStream(inputStream, null);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getName() {
