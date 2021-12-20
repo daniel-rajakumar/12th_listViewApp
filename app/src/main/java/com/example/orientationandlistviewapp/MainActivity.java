@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     Document document;
     EditText editText;
     Button button;
-    String name = "apple";
+    String name = "samsung";
     String url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
 
     @Override
@@ -71,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
     private void getWebsite() throws InterruptedException {
         Thread thread = new Thread(() -> {
             try {
+                Log.d("110 start", " -> title");
                 document = Jsoup.connect(url).get();
+                Log.d("110 start", " -> " + document.title());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -98,25 +100,22 @@ public class MainActivity extends AppCompatActivity {
         for (Element element: elements){
             count++;
             int finalCount = count;
-            Thread thread = new Thread(() -> {
-                String name = element.select(".WsMG1c.nnK0zc").text();
-                String author = element.select(".KoLSrc").get(1).text();
-                String rating = element.select(".pf5lIe div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "").trim();
-                String image = element.select(".T75of.QNCnCf").get(0).attr("data-src");
-                String url = String.format("https://play.google.com%s&hl=en_US&gl=US", element.select(".wXUyZd a").attr("href"));
-                final Document[] doc = new Document[1];
+            String name = element.select(".WsMG1c.nnK0zc").text();
+            String author = element.select(".KoLSrc").get(1).text();
+            String rating = element.select(".pf5lIe div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "").trim();
+            String image = element.select(".T75of.QNCnCf").get(0).attr("data-src");
+            String url = String.format("https://play.google.com%s&hl=en_US&gl=US", element.select(".wXUyZd a").attr("href"));
 
-                Thread thread1 = new Thread(() -> {
-                    try {
-                        doc[0] = Jsoup.connect(url).get();
-                        list.add(new Product(finalCount, name, author, rating, image));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-                thread1.start();
-            });
-            thread.start();
+            new Thread(() -> {
+                try {
+                    Log.d("110 start", finalCount + " -> " + document.title());
+                    Document document = Jsoup.connect(url).get();
+                    Log.d("110 end", finalCount + " -> " +document.title());
+                    list.add(new Product(finalCount, document, name, author, rating, image));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
         }
         while (list.size() < elements.size());
         list.sort(Comparator.comparingInt(Product::getId));
@@ -129,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
     void go() {
         button.setOnClickListener(v -> {
+            button.setText("Loading");
             name = editText.getText().toString();
             Log.d("114", name);
             url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             updateList();
+            button.setText("Done");
         });
     }
 
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
             LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
             Product product = list.get(position);
 //            button.setText(product.getName());
-            textView.setText(product.getName());
+            textView.setText(product.getDoc().title());
             imageView.setImageDrawable(product.getImage());
 
             linearLayout.setOnClickListener(v -> {
