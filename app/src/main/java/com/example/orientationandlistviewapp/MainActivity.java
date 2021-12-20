@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,6 +28,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -81,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
     void updateList() {
         list.clear();
         Elements elementsName = document.select("div.WsMG1c");
+        Elements elementsRating = document.select("div.pf5lIe");
+        Elements elementsAuthor = document.select("div.KoLSrc");
         Elements elementsImage = document.select("img.T75of.QNCnCf");
 
         for (int i = 0; i < elementsName.size(); i++) {
@@ -90,10 +94,22 @@ public class MainActivity extends AppCompatActivity {
                     String url = elementsImage.get(finalI * 3).attr("data-src");
                     InputStream inputStream = (InputStream) (new URL(url).getContent());
 
-                    String name = elementsName.get(finalI).text();
-                    double price = 1;
+//                    String name = elementsName.get(finalI).text();
+                    Log.d("98", "~~~~~~~~~~~~~~~~~\n " + finalI + "  \n" + elementsRating + "");
+//                    Log.d("size", elementsRating.size() + "" + elementsName.size());
+                    String name = elementsRating.get(finalI).select("div").attr("aria-label");
+
+
+//                    Log.d("label", elementsRating.select("div").attr("aria-label") + "");
+//                    Log.d("label", elementsRating.select("div").get(finalI).attr("aria-label") + "");
+//                    Log.d("label", elementsRating.get(finalI).select("div").attr("aria-label") + "");
+
+
+
+                    String author = elementsAuthor.get(finalI * 2).text();
+                    double rating = 1;
                     Drawable image = Drawable.createFromStream(inputStream, null);
-                    list.add(new Product(name, price, image));
+                    list.add(new Product(name, author, rating, image));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -157,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
             Button button = adapterLayout.findViewById(R.id.button);
             TextView textView = adapterLayout.findViewById(R.id.textView);
             ImageView imageView = adapterLayout.findViewById(R.id.imageView);
+            TextView textView1 = findViewById(R.id.textView6);
             LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
             Product product = list.get(position);
 //            button.setText(product.getName());
@@ -169,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
                     parent.getChildAt(i).setBackgroundColor(Color.WHITE);
                 }
                 v.setBackgroundColor(Color.GREEN);
+                textView1.setText("By: " + product.getAuthor());
             });
 
 
