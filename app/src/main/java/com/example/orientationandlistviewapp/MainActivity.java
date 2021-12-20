@@ -121,23 +121,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void set() throws IOException {
-        updateList();
+//        updateList();
     }
 
     void go() {
         button.setOnClickListener(v -> {
             button.setText("Loading");
             name = editText.getText().toString();
-            Log.d("114", name);
             url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
             try {
                 getWebsite();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            try {
                 updateList();
-            } catch (IOException e) {
+            } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             }
             button.setText("Done");
