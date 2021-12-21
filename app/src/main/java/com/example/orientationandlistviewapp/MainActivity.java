@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -234,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
             TextView _textView = null;
             if (isLandSpace){
                 _textView = findViewById(R.id.textView2);
+                _textView.setMovementMethod(new ScrollingMovementMethod());
             }
             LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
             Product product = list.get(position);
@@ -258,7 +260,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if (isLandSpace) {
                     final_textView.setText(product.getInfo());
-
                 }
             });
 

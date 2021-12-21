@@ -32,12 +32,12 @@ public class Product {
 
             String line = "";
 
-            for (int i = 0; i < 1_000; i++) line += "~~~~~~~~~~~~~~~~~~~~~~~\n";
-            line += "\n";
-            Log.d("product\n",
-                    id + " " + line +
-                     elements.select("div.DWPxHb span div")
-            );
+//            for (int i = 0; i < 1_000; i++) line += "~~~~~~~~~~~~~~~~~~~~~~~\n";
+//            line += "\n";
+//            Log.d("product\n",
+//                    id + " " + line +
+//                     elements.select("div.DWPxHb span div")
+//            );
 
             // info
             this.info = elements.select("div.DWPxHb span div").text();
