@@ -30,15 +30,6 @@ public class Product {
             this.doc = doc;
             Elements elements = doc.select("main.LXrl4c");
 
-            String line = "";
-
-//            for (int i = 0; i < 1_000; i++) line += "~~~~~~~~~~~~~~~~~~~~~~~\n";
-//            line += "\n";
-//            Log.d("product\n",
-//                    id + " " + line +
-//                     elements.select("div.DWPxHb span div")
-//            );
-
             // info
             this.info = elements.select("div.DWPxHb span div").text();
 //

@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }).start();
         }
+        int size = elements.size();
         while (list.size() < elements.size());
         list.sort(Comparator.comparingInt(Product::getId));
         listView.setAdapter(new CustomAdapter(this, R.layout.adapter_layout, list));
