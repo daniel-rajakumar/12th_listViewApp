@@ -74,7 +74,6 @@ class CustomAdapter extends ArrayAdapter<Product> {
 
             if (mainActivity.isLandSpace) {
                 final_textView.setText(Html.fromHtml(product.getInfo(), Html.FROM_HTML_MODE_COMPACT));
-//                final_textView.setText(product.getInfo());
             }
         });
 

@@ -31,7 +31,9 @@ public class Product {
             Elements elements = doc.select("main.LXrl4c");
 
             // info
-            this.info = elements.select("div.DWPxHb span div").text();
+            this.info = elements.select("div.DWPxHb span div").toString();
+
+            Log.d("info", info);
 //
             // name
             this.name = elements.select("h1.AHFaub").text();
