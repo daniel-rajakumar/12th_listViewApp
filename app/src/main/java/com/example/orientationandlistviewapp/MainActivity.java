@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
@@ -48,12 +49,17 @@ public class MainActivity extends AppCompatActivity {
     String name = "news";
     String url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
     Bundle savedInstanceState;
+    TextView _textView;
+    boolean isLandSpace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.savedInstanceState = savedInstanceState;
+
+        isLandSpace = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+
         try {
             if (savedInstanceState == null){
                 ready();
@@ -76,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
         editText = findViewById(R.id.editTextTextPersonName3);
         button = findViewById(R.id.button3);
 
+        if (isLandSpace) {
+            _textView = findViewById(R.id.textView2);
+        }
+
 //        Log.d("list", list.toString());
 
         getWebsite();
@@ -86,6 +96,11 @@ public class MainActivity extends AppCompatActivity {
         list = (ArrayList) savedInstanceState.get("list");
         editText = findViewById(R.id.editTextTextPersonName3);
         button = findViewById(R.id.button3);
+
+        if (isLandSpace) {
+            _textView = findViewById(R.id.textView2);
+        }
+
 
 //        Log.d("list", list.toString());
 
@@ -216,6 +231,10 @@ public class MainActivity extends AppCompatActivity {
             ImageView imageView = adapterLayout.findViewById(R.id.imageView);
             TextView textView1 = findViewById(R.id.textView6);
             TextView textView2 = findViewById(R.id.textView3);
+            TextView _textView = null;
+            if (isLandSpace){
+                _textView = findViewById(R.id.textView2);
+            }
             LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
             Product product = list.get(position);
 //            button.setText(product.getName());
@@ -226,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
 //                Log.d("BG",  i + " -> " + parent.getChildAt(i).getBackground().toString());
 //            }
 
+            TextView final_textView = _textView;
             linearLayout.setOnClickListener(v -> {
                 for (int i = 0; i < parent.getChildCount(); i++){
                     parent.getChildAt(i).setBackgroundColor(Color.WHITE);
@@ -235,6 +255,11 @@ public class MainActivity extends AppCompatActivity {
                 if (author.length() > 35) author = author.substring(0, 32) + "...";
                 textView1.setText("By: " + author);
                 textView2.setText("Rating: " + product.getRating());
+
+                if (isLandSpace) {
+                    final_textView.setText(product.getInfo());
+
+                }
             });
 
 

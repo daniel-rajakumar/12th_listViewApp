@@ -18,6 +18,7 @@ public class Product {
     private String author;
     private String rating;
     private Drawable image;
+    private String info;
 
 
     Product(int id, Document doc) throws IOException {
@@ -31,13 +32,15 @@ public class Product {
 
             String line = "";
 
-//            for (int i = 0; i < 1_000; i++) line += "~~~~~~~~~~~~~~~~~~~~~~~\n";
-//            line += "\n";
-//            Log.d("product\n",
-//                    id + " " + line +
-//                     elements.select("a.hrTbp.R8zArc").text()
-//
-//            );
+            for (int i = 0; i < 1_000; i++) line += "~~~~~~~~~~~~~~~~~~~~~~~\n";
+            line += "\n";
+            Log.d("product\n",
+                    id + " " + line +
+                     elements.select("div.DWPxHb span div")
+            );
+
+            // info
+            this.info = elements.select("div.DWPxHb span div").text();
 //
             // name
             this.name = elements.select("h1.AHFaub").text();
@@ -71,6 +74,9 @@ public class Product {
         return id;
     }
 
+    public String getInfo() {
+        return info;
+    }
 
     public Document getDoc() {
         return doc;
