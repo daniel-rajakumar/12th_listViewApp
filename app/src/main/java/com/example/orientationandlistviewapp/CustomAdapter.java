@@ -31,6 +31,12 @@ class CustomAdapter extends ArrayAdapter<Product> {
         this.context = context;
         this.xmlResource = resource;
         this.list = objects;
+
+        TextView textView1 = mainActivity.findViewById(R.id.textView6);
+        TextView textView2 = mainActivity.findViewById(R.id.textView3);
+        textView1.setText("By: ");
+        textView2.setText(" :Rating");
+        
     }
 
 
@@ -47,6 +53,7 @@ class CustomAdapter extends ArrayAdapter<Product> {
         TextView textView1 = mainActivity.findViewById(R.id.textView6);
         TextView textView2 = mainActivity.findViewById(R.id.textView3);
         TextView _textView = null;
+
         if (mainActivity.isLandSpace) {
             _textView = mainActivity.findViewById(R.id.textView2);
             _textView.setMovementMethod(new ScrollingMovementMethod());
@@ -66,8 +73,7 @@ class CustomAdapter extends ArrayAdapter<Product> {
             for (int i = 0; i < parent.getChildCount(); i++) {
                 parent.getChildAt(i).setBackgroundColor(Color.WHITE);
             }
-            int num = 200;
-            v.setBackgroundColor(Color.rgb(num, num, num));
+            v.setBackgroundColor(Color.rgb(200, 200, 200));
             String author = product.getAuthor();
             if (author.length() > 35) author = author.substring(0, 32) + "...";
             textView1.setText("By: " + author);

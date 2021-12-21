@@ -174,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
 
     void go() {
         button.setOnClickListener(v -> {
-            button.setText("Loading");
             name = editText.getText().toString();
             url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
             try {
@@ -183,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
             } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             }
-            button.setText("Done");
         });
     }
 
