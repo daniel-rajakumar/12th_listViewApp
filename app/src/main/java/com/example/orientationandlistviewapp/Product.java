@@ -33,7 +33,7 @@ public class Product {
             // info
             this.info = elements.select("div.DWPxHb span div").toString();
 
-            Log.d("info", info);
+//            Log.d("info", info);
 //
             // name
             this.name = elements.select("h1.AHFaub").text();
