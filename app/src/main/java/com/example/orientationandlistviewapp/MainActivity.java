@@ -76,18 +76,18 @@ public class MainActivity extends AppCompatActivity {
         editText = findViewById(R.id.editTextTextPersonName3);
         button = findViewById(R.id.button3);
 
-        Log.d("list", list.toString());
+//        Log.d("list", list.toString());
 
         getWebsite();
     }
 
     void _ready() throws IOException, InterruptedException {
         listView = findViewById(R.id.listView);
-        list = (ArrayList) savedInstanceState.get("key");
+        list = (ArrayList) savedInstanceState.get("list");
         editText = findViewById(R.id.editTextTextPersonName3);
         button = findViewById(R.id.button3);
 
-        Log.d("list", list.toString());
+//        Log.d("list", list.toString());
 
 //        getWebsite();
 //        updateList();
@@ -203,18 +203,6 @@ public class MainActivity extends AppCompatActivity {
             this.list = objects;
         }
 
-        void update() {
-            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            View adapterLayout = layoutInflater.inflate(xmlResource, null);
-            Button button = adapterLayout.findViewById(R.id.button);
-            TextView textView = adapterLayout.findViewById(R.id.textView);
-            ImageView imageView = adapterLayout.findViewById(R.id.imageView);
-
-            for (Product p : list) {
-                textView.setText(p.getName());
-            }
-        }
-
 
         @NonNull
         @Override
@@ -233,6 +221,10 @@ public class MainActivity extends AppCompatActivity {
 //            button.setText(product.getName());
             textView.setText(product.getName());
             imageView.setImageDrawable(product.getImage());
+
+//            for (int i = 0; i < parent.getChildCount(); i++){
+//                Log.d("BG",  i + " -> " + parent.getChildAt(i).getBackground().toString());
+//            }
 
             linearLayout.setOnClickListener(v -> {
                 for (int i = 0; i < parent.getChildCount(); i++){
@@ -259,14 +251,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelableArrayList("key", (ArrayList<? extends Parcelable>) list);
         super.onSaveInstanceState(outState);
-    }
-
-    @Nullable
-    @Override
-    public Object onRetainCustomNonConfigurationInstance() {
-        return list;
+        outState.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) list);
     }
 }
 
