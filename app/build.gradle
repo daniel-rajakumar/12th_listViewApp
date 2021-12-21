@@ -28,7 +28,9 @@ android {
 }
 
 dependencies {
+    final def markwon_version = 'latest_version'
 
+    implementation "io.noties.markwon:core:${markwon_version}"
     implementation 'org.jsoup:jsoup:1.14.3'
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'

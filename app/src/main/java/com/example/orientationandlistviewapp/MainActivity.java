@@ -1,29 +1,13 @@
 package com.example.orientationandlistviewapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,15 +15,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ListView listView;
@@ -108,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 //        getWebsite();
 //        updateList();
 
-        listView.setAdapter(new CustomAdapter(this, R.layout.adapter_layout, list));
+        listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
 
     }
 
@@ -164,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         int size = elements.size();
         while (list.size() < elements.size());
         list.sort(Comparator.comparingInt(Product::getId));
-        listView.setAdapter(new CustomAdapter(this, R.layout.adapter_layout, list));
+        listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
     }
 
     void _set() throws IOException {
@@ -206,74 +185,6 @@ public class MainActivity extends AppCompatActivity {
             }
             button.setText("Done");
         });
-    }
-
-    class CustomAdapter extends ArrayAdapter<Product> {
-        List<Product> list;
-        Context context;
-        int xmlResource;
-
-        public CustomAdapter(@NonNull Context context, int resource, @NonNull List<Product> objects) {
-            super(context, resource, objects);
-            this.context = context;
-            this.xmlResource = resource;
-            this.list = objects;
-        }
-
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-//            return super.getView(position, convertView, parent);
-            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            View adapterLayout = layoutInflater.inflate(xmlResource, null);
-
-            Button button = adapterLayout.findViewById(R.id.button);
-            TextView textView = adapterLayout.findViewById(R.id.textView);
-            ImageView imageView = adapterLayout.findViewById(R.id.imageView);
-            TextView textView1 = findViewById(R.id.textView6);
-            TextView textView2 = findViewById(R.id.textView3);
-            TextView _textView = null;
-            if (isLandSpace){
-                _textView = findViewById(R.id.textView2);
-                _textView.setMovementMethod(new ScrollingMovementMethod());
-            }
-            LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
-            Product product = list.get(position);
-//            button.setText(product.getName());
-            textView.setText(product.getName());
-            imageView.setImageDrawable(product.getImage());
-
-//            for (int i = 0; i < parent.getChildCount(); i++){
-//                Log.d("BG",  i + " -> " + parent.getChildAt(i).getBackground().toString());
-//            }
-
-            TextView final_textView = _textView;
-            linearLayout.setOnClickListener(v -> {
-                for (int i = 0; i < parent.getChildCount(); i++){
-                    parent.getChildAt(i).setBackgroundColor(Color.WHITE);
-                }
-                v.setBackgroundColor(Color.GREEN);
-                String author = product.getAuthor();
-                if (author.length() > 35) author = author.substring(0, 32) + "...";
-                textView1.setText("By: " + author);
-                textView2.setText("Rating: " + product.getRating());
-
-                if (isLandSpace) {
-                    final_textView.setText(product.getInfo());
-                }
-            });
-
-
-            button.setOnClickListener(view -> {
-                list.remove(position);
-                notifyDataSetChanged();
-            });
-
-            return adapterLayout;
-        }
-
-
     }
 
     @Override
