@@ -66,11 +66,12 @@ class CustomAdapter extends ArrayAdapter<Product> {
             for (int i = 0; i < parent.getChildCount(); i++) {
                 parent.getChildAt(i).setBackgroundColor(Color.WHITE);
             }
-            v.setBackgroundColor(Color.GREEN);
+            int num = 200;
+            v.setBackgroundColor(Color.rgb(num, num, num));
             String author = product.getAuthor();
             if (author.length() > 35) author = author.substring(0, 32) + "...";
             textView1.setText("By: " + author);
-            textView2.setText("Rating: " + product.getRating());
+            textView2.setText(product.getRating() + " :Rating");
 
             if (mainActivity.isLandSpace) {
                 final_textView.setText(Html.fromHtml(product.getInfo(), Html.FROM_HTML_MODE_COMPACT));

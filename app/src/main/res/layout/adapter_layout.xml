@@ -11,7 +11,7 @@
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2.0"
+        android:layout_weight="2.5"
         android:backgroundTint="#C70000"
         android:background="@drawable/remove_button"/>
 
@@ -28,6 +28,6 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1.8" />
+        android:layout_weight="2.5" />
 
 </LinearLayout>
