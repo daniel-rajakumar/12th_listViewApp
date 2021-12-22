@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,14 @@ class CustomAdapter extends ArrayAdapter<Product> {
         TextView textView2 = mainActivity.findViewById(R.id.textView3);
         textView1.setText("By: ");
         textView2.setText(" :Rating");
-        
+
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        View adapterLayout = layoutInflater.inflate(xmlResource, null);
+        LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
+        Log.d("custom", linearLayout.toString());
+//        linearLayout.setBackgroundColor(Color.GRAY);
+
+
     }
 
 
@@ -46,6 +54,8 @@ class CustomAdapter extends ArrayAdapter<Product> {
 //            return super.getView(position, convertView, parent);
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View adapterLayout = layoutInflater.inflate(xmlResource, null);
+
+
 
         Button button = adapterLayout.findViewById(R.id.button);
         TextView textView = adapterLayout.findViewById(R.id.textView);
@@ -69,11 +79,21 @@ class CustomAdapter extends ArrayAdapter<Product> {
 //            }
 
         TextView final_textView = _textView;
+
+
+
+
+
+        /*
         linearLayout.setOnClickListener(v -> {
+//            Log.d("View: (v)", v.toString());
+//            Log.d("View: ( )", linearLayout.toString());
+
             for (int i = 0; i < parent.getChildCount(); i++) {
-                parent.getChildAt(i).setBackgroundColor(Color.WHITE);
+    //                parent.getChildAt(i).setBackgroundColor(Color.WHITE);
             }
-            v.setBackgroundColor(Color.rgb(200, 200, 200));
+    //            v.setBackgroundColor(Color.rgb(200, 200, 200));
+    //            v.setBackgroundColor(Color.rgb(200, 200, 200));
             String author = product.getAuthor();
             if (author.length() > 35) author = author.substring(0, 32) + "...";
             textView1.setText("By: " + author);
@@ -83,6 +103,7 @@ class CustomAdapter extends ArrayAdapter<Product> {
                 final_textView.setText(Html.fromHtml(product.getInfo(), Html.FROM_HTML_MODE_COMPACT));
             }
         });
+         **/
 
 
         button.setOnClickListener(view -> {

@@ -4,7 +4,10 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#00FDD835">
+    android:choiceMode="singleChoice"
+    android:descendantFocusability="blocksDescendants">
+
+
 
 
     <androidx.appcompat.widget.AppCompatButton

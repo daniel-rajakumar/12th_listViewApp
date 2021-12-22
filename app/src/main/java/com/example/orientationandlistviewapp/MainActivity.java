@@ -3,11 +3,18 @@ package com.example.orientationandlistviewapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -144,6 +151,38 @@ public class MainActivity extends AppCompatActivity {
         while (list.size() < elements.size());
         list.sort(Comparator.comparingInt(Product::getId));
         listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
+
+
+
+
+
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Product product = (Product) list.get(position);
+            for (int i = 0; i < parent.getChildCount(); i++) {
+                //                parent.getChildAt(i).setBackgroundColor(Color.WHITE);
+            }
+            //            v.setBackgroundColor(Color.rgb(200, 200, 200));
+            //            v.setBackgroundColor(Color.rgb(200, 200, 200));
+            String author = product.getAuthor();
+            if (author.length() > 35) author = author.substring(0, 32) + "...";
+
+            TextView textView1 = findViewById(R.id.textView6);
+            TextView textView2 = findViewById(R.id.textView3);
+
+            textView1.setText("By: " + author);
+            textView2.setText(product.getRating() + " :Rating");
+
+
+            if (isLandSpace) {
+                _textView = findViewById(R.id.textView2);
+                _textView.setMovementMethod(new ScrollingMovementMethod());
+            }
+
+            if (isLandSpace) {
+                _textView.setText(Html.fromHtml(product.getInfo(), Html.FROM_HTML_MODE_COMPACT));
+            }
+
+        });
     }
 
     void _set() throws IOException {
@@ -189,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) list);
+//        outState.putParcelable("view", selectedView);
     }
 }
 
