@@ -33,18 +33,10 @@ class CustomAdapter extends ArrayAdapter<Product> {
         this.xmlResource = resource;
         this.list = objects;
 
-        TextView textView1 = mainActivity.findViewById(R.id.textView6);
-        TextView textView2 = mainActivity.findViewById(R.id.textView3);
-        textView1.setText("By: ");
-        textView2.setText(" :Rating");
-
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View adapterLayout = layoutInflater.inflate(xmlResource, null);
         LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
         Log.d("custom", linearLayout.toString());
-//        linearLayout.setBackgroundColor(Color.GRAY);
-
-
     }
 
 
@@ -68,42 +60,10 @@ class CustomAdapter extends ArrayAdapter<Product> {
             _textView = mainActivity.findViewById(R.id.textView2);
             _textView.setMovementMethod(new ScrollingMovementMethod());
         }
-        LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
+
         Product product = list.get(position);
-//            button.setText(product.getName());
         textView.setText(product.getName());
         imageView.setImageDrawable(product.getImage());
-
-//            for (int i = 0; i < parent.getChildCount(); i++){
-//                Log.d("BG",  i + " -> " + parent.getChildAt(i).getBackground().toString());
-//            }
-
-        TextView final_textView = _textView;
-
-
-
-
-
-        /*
-        linearLayout.setOnClickListener(v -> {
-//            Log.d("View: (v)", v.toString());
-//            Log.d("View: ( )", linearLayout.toString());
-
-            for (int i = 0; i < parent.getChildCount(); i++) {
-    //                parent.getChildAt(i).setBackgroundColor(Color.WHITE);
-            }
-    //            v.setBackgroundColor(Color.rgb(200, 200, 200));
-    //            v.setBackgroundColor(Color.rgb(200, 200, 200));
-            String author = product.getAuthor();
-            if (author.length() > 35) author = author.substring(0, 32) + "...";
-            textView1.setText("By: " + author);
-            textView2.setText(product.getRating() + " :Rating");
-
-            if (mainActivity.isLandSpace) {
-                final_textView.setText(Html.fromHtml(product.getInfo(), Html.FROM_HTML_MODE_COMPACT));
-            }
-        });
-         **/
 
 
         button.setOnClickListener(view -> {
