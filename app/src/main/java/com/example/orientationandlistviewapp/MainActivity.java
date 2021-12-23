@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         }
         editText = findViewById(R.id.editTextTextPersonName3);
         button = findViewById(R.id.button3);
-
         textView_rating = findViewById(R.id.textView6);
         textView_by = findViewById(R.id.textView3);
 
@@ -80,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null){
             getWebsite();
+
         } else {
             textView_by.setText(savedInstanceState.get("by").toString());
             textView_rating.setText(savedInstanceState.get("rating").toString());
@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 
 
     private void getWebsite() throws InterruptedException {
@@ -124,39 +123,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    public View getViewByPosition(int pos, ListView listView) {
-        final int firstListItemPosition = listView.getFirstVisiblePosition();
-        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
-
-        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
-            return listView.getAdapter().getView(pos, null, listView);
-        } else {
-            final int childIndex = pos - firstListItemPosition;
-            return listView.getChildAt(childIndex);
-        }
-    }
-
     void setListeners() throws IOException {
-        Log.d("129", "hello");
-
-        if (savedInstanceState != null){
-            if (isLandSpace){
-                Product product = (Product) list.get((Integer) savedInstanceState.get("position"));
-                textView_info.setMovementMethod(new ScrollingMovementMethod());
-                textView_info.setText(Html.fromHtml(product.getInfo(), Html.FROM_HTML_MODE_COMPACT));
-            }
+        if (savedInstanceState != null && isLandSpace){
+            Product product = (Product) list.get((Integer) savedInstanceState.get("position"));
+            textView_info.setMovementMethod(new ScrollingMovementMethod());
+            textView_info.setText(Html.fromHtml(product.getInfo(), Html.FROM_HTML_MODE_COMPACT));
         }
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            Log.d("views 2", view.getId() + "");
             clickedItemID = position;
-            Log.d("click 1", "here \n\n\n\n" + parent + "\n" + view + "\n" + position + "\n" + id);
-//            Log.d("click 2", "parent " + view.findViewById(view.getId()).toString());
-            Log.d("click 2", "parent " + parent.getItemAtPosition(0));
-
             Product product = (Product) list.get(position);
             String author = product.getAuthor();
+
             if (author.length() > 35) author = author.substring(0, 32) + "...";
 
             TextView textView1 = findViewById(R.id.textView6);
@@ -166,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
             textView2.setText(product.getRating() + " :Rating");
 
             if (isLandSpace) {
-                textView_info = findViewById(R.id.textView2);
                 textView_info.setMovementMethod(new ScrollingMovementMethod());
                 textView_info.setText(Html.fromHtml(product.getInfo(), Html.FROM_HTML_MODE_COMPACT));
             }
@@ -177,6 +154,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    void resetVariables(){
+        textView_by.setText("By: ");
+        textView_rating.setText(": Rating");
+        textView_info.setText("");
+    }
+
 
 
     void go() {
@@ -186,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 getWebsite();
                 updateList();
+                resetVariables();
             } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             }
