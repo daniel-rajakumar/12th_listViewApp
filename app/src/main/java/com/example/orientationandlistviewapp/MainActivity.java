@@ -3,17 +3,19 @@ package com.example.orientationandlistviewapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     TextView textView_by, textView_rating, textView_info;
     int clickedItemID;
     Product selectedProduct;
+    Switch toggleSwitch;
+    ViewSwitcher viewSwitcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +133,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    void setToggleButton(){
+        toggleSwitch = findViewById(R.id.switch2);
+        viewSwitcher = findViewById(R.id.viewSwitcher);
+
+
+        toggleSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            textView_info.setText(isChecked + "");
+            if (isChecked){
+                viewSwitcher.showNext();
+            } else {
+                viewSwitcher.showPrevious();
+            }
+
+        });
+
+
+    }
+
     void setListeners() throws IOException {
         if (savedInstanceState != null && isLandSpace && (selectedProduct != null)){
             textView_info.setMovementMethod(new ScrollingMovementMethod());
@@ -183,12 +205,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
-
+        if (isLandSpace) {
+            setToggleButton();
+        }
     }
 
     @Override
