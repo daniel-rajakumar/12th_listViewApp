@@ -7,32 +7,34 @@ import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class Product implements Parcelable {
     private int id;
-    private Document doc, doc2;
+    private Document doc;
     private String name;
     private String author;
     private String rating;
     private Drawable image;
     private String info;
+    private ArrayList<String> imageLink;
 
 
-    Product(int id, Document doc, Document doc2) throws IOException {
+
+    Product(int id, Document doc) throws IOException {
         try {
             // id
             this.id = id;
 
             // doc
             this.doc = doc;
-            this.doc2 = doc2;
             Elements elements1 = doc.select("main.LXrl4c");
-            Elements elements2 = doc2.select("div.W4P4ne");
 
             // info
             this.info = elements1.select("div.DWPxHb span div").toString();
@@ -54,13 +56,24 @@ public class Product implements Parcelable {
             InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
             this.image = Drawable.createFromStream(inputStream, null);
 
-            //comments
-            Log.d("58",
-                    ".\n\n\n\n\n\n" +
-                            doc2.select("div.W4P4ne")
-            );
+            //url
+//            Log.d("doc",
+//                  ".\n" +
+////                   doc.select("div.SgoUSc .Q4vdJd").select("img.T75of.DYfLw")
+//                    doc.select("img.T75of.DYfLw")
+//            );
 
+            // image links
+            imageLink = new ArrayList<>();
+            Elements links = doc.select("img.T75of.DYfLw");
 
+            for (Element element: links){
+                String link1 = element.attr("src");
+                if (link1.startsWith("data")) link1 = "";
+                String link2 = element.attr("data-src");
+                String link = link1 + link2;
+                imageLink.add(link);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -107,8 +120,9 @@ public class Product implements Parcelable {
         return image;
     }
 
-
-
+    public ArrayList<String> getImageLink() {
+        return imageLink;
+    }
 
     @Override
     public int describeContents() {

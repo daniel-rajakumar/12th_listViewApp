@@ -116,12 +116,10 @@ public class MainActivity extends AppCompatActivity {
             if (id == 2) break;
 
             String url = String.format("https://play.google.com%s&hl=en_US&gl=US", element.select(".wXUyZd a").attr("href"));
-            int finalCount = count;
             new Thread(() -> {
                 try {
                     Document doc = Jsoup.connect(url).get();
-                    Document doc2 = Jsoup.connect(url + "&showAllReviews=true").get();
-                    list.add(new Product(id, doc, doc2));
+                    list.add(new Product(id, doc));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -151,9 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
         toggleSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked){
-                listView2 = findViewById(R.id.listView2);
                 viewSwitcher.showNext();
-                listView2.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
             } else {
                 viewSwitcher.showPrevious();
             }
