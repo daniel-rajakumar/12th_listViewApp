@@ -20,16 +20,8 @@ public class SliderViewHolder extends RecyclerView.ViewHolder {
     }
 
     void setImage(SliderImage sliderImage) throws IOException {
-
-
-            try {
-                String imageUrl = sliderImage.getUrl();
-                InputStream inputStream = null;
-                inputStream = (InputStream) (new URL(imageUrl).getContent());
-                imageView.setImageDrawable(Drawable.createFromStream(inputStream, null));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+        String imageUrl = sliderImage.getUrl();
+        InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
+        imageView.setImageDrawable(Drawable.createFromStream(inputStream, null));
     }
 }
