@@ -123,6 +123,12 @@ public class MainActivity extends AppCompatActivity {
         while (list.size() < elements.size());
         list.sort(Comparator.comparingInt(Product::getId));
         listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
+
+        Button button2 = findViewById(R.id.button);
+        button2.setOnClickListener(v -> {
+            resetVariables();
+        });
+
     }
 
 
@@ -181,6 +187,13 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
+
+
+
+
+
+
+
     }
 
     @Override
