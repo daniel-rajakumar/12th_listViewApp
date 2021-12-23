@@ -2,8 +2,8 @@ package com.example.orientationandlistviewapp;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.text.Html;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.io.IOException;
 import java.util.List;
 
 class CustomAdapter extends ArrayAdapter<Product> {
@@ -48,7 +49,6 @@ class CustomAdapter extends ArrayAdapter<Product> {
         View adapterLayout = layoutInflater.inflate(xmlResource, null);
 
 
-
         Button button = adapterLayout.findViewById(R.id.button);
         TextView textView = adapterLayout.findViewById(R.id.textView);
         ImageView imageView = adapterLayout.findViewById(R.id.imageView);
@@ -76,3 +76,5 @@ class CustomAdapter extends ArrayAdapter<Product> {
 
 
 }
+
+

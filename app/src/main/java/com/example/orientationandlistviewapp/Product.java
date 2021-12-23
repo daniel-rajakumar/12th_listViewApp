@@ -1,6 +1,8 @@
 package com.example.orientationandlistviewapp;
 
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import org.jsoup.Jsoup;
@@ -11,7 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-public class Product {
+public class Product implements Parcelable {
     private int id;
     private Document doc;
     private String name;
@@ -55,6 +57,18 @@ public class Product {
         }
     }
 
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
+
     public String getName() {
         return name;
     }
@@ -83,4 +97,28 @@ public class Product {
         return image;
     }
 
+
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    protected Product(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        author = in.readString();
+        rating = in.readString();
+        info = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(author);
+        dest.writeString(rating);
+        dest.writeString(info);
+    }
 }

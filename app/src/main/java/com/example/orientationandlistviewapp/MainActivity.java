@@ -3,20 +3,15 @@ package com.example.orientationandlistviewapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,7 +26,7 @@ import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
     ListView listView;
-    ArrayList list;
+    ArrayList<Product> list;
     Document document;
     EditText editText;
     Button button;
@@ -41,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isLandSpace;
     TextView textView_by, textView_rating, textView_info;
     int clickedItemID;
-    boolean iteamSelected;
+    Product selectedProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
             list = new ArrayList<>();
         } else {
             list = (ArrayList) savedInstanceState.get("list");
+            selectedProduct = (Product) savedInstanceState.get("product");
         }
         editText = findViewById(R.id.editTextTextPersonName3);
         button = findViewById(R.id.button3);
@@ -82,10 +78,11 @@ public class MainActivity extends AppCompatActivity {
             getWebsite();
 
         } else {
-            textView_by.setText(savedInstanceState.get("by").toString());
-            textView_rating.setText(savedInstanceState.get("rating").toString());
-            iteamSelected = (boolean) savedInstanceState.get("selected");
-            Log.d("selected", iteamSelected + "");
+            if (selectedProduct != null){
+                textView_by.setText(selectedProduct.getAuthor());
+                textView_rating.setText(selectedProduct.getRating());
+            }
+            Log.d("selected", selectedProduct + "");
             listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
         }
 
@@ -124,26 +121,24 @@ public class MainActivity extends AppCompatActivity {
         list.sort(Comparator.comparingInt(Product::getId));
         listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
 
-        Button button2 = findViewById(R.id.button);
-        button2.setOnClickListener(v -> {
-            resetVariables();
-        });
+//        Button button2 = findViewById(R.id.button);
+//        button2.setOnClickListener(v -> {
+//            resetVariables();
+//        });
 
     }
 
 
     void setListeners() throws IOException {
-        if (savedInstanceState != null && isLandSpace && iteamSelected){
-            Product product = (Product) list.get((Integer) savedInstanceState.get("position"));
+        if (savedInstanceState != null && isLandSpace && (selectedProduct != null)){
             textView_info.setMovementMethod(new ScrollingMovementMethod());
-            textView_info.setText(Html.fromHtml(product.getInfo(), Html.FROM_HTML_MODE_COMPACT));
+            textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
         }
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            iteamSelected = true;
             clickedItemID = position;
-            Product product = (Product) list.get(position);
-            String author = product.getAuthor();
+            selectedProduct = (Product) list.get(position);
+            String author = selectedProduct.getAuthor();
 
             if (author.length() > 35) author = author.substring(0, 32) + "...";
 
@@ -151,11 +146,11 @@ public class MainActivity extends AppCompatActivity {
             TextView textView2 = findViewById(R.id.textView3);
 
             textView1.setText("By: " + author);
-            textView2.setText(product.getRating() + " :Rating");
+            textView2.setText(selectedProduct.getRating() + " :Rating");
 
             if (isLandSpace) {
                 textView_info.setMovementMethod(new ScrollingMovementMethod());
-                textView_info.setText(Html.fromHtml(product.getInfo(), Html.FROM_HTML_MODE_COMPACT));
+                textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
             }
         });
     }
@@ -170,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         if (isLandSpace){
             textView_info.setText("");
         }
-        iteamSelected = false;
+        selectedProduct = null;
     }
 
 
@@ -199,11 +194,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) list);
-        outState.putString("by",  textView_by.getText().toString());
-        outState.putString("rating",  textView_rating.getText().toString());
-        outState.putBoolean("selected",  iteamSelected);
+        outState.putParcelableArrayList("list", list);
         outState.putInt("position", clickedItemID);
+        outState.putParcelable("product", selectedProduct);
     }
 }
 
