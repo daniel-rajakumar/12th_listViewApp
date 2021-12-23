@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Html;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     Bundle savedInstanceState;
     boolean isLandSpace;
     TextView textView_by, textView_rating, textView_info;
+    int clickedItemID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,8 +122,41 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
     }
 
+
+
+    public View getViewByPosition(int pos, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
+    }
+
     void setListeners() throws IOException {
+        Log.d("129", "hello");
+
+        if (savedInstanceState != null){
+//            listView.getItemAtPosition((Integer) savedInstanceState.get("position"));
+//            listView.setBackgroundColor(Color.GREEN);
+
+            Log.d("views 1", getViewByPosition(0, listView).getId() + "");
+        }
+
+//        listView.getAdapter().getView(0, CustomAdapter.).setBackgroundColor(Color.GREEN);
+
+
         listView.setOnItemClickListener((parent, view, position, id) -> {
+            getViewByPosition(0, listView).setBackgroundColor(Color.GREEN);
+            Log.d("views 2", view.getId() + "");
+            clickedItemID = position;
+            Log.d("click 1", "here \n\n\n\n" + parent + "\n" + view + "\n" + position + "\n" + id);
+//            Log.d("click 2", "parent " + view.findViewById(view.getId()).toString());
+            Log.d("click 2", "parent " + parent.getItemAtPosition(0));
+
             Product product = (Product) list.get(position);
             String author = product.getAuthor();
             if (author.length() > 35) author = author.substring(0, 32) + "...";
@@ -139,6 +174,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+
 
 
 
@@ -161,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) list);
         outState.putString("by",  textView_by.getText().toString());
         outState.putString("rating",  textView_rating.getText().toString());
+        outState.putInt("position", clickedItemID);
     }
 }
 
