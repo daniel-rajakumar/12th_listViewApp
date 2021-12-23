@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 
 
@@ -140,17 +141,14 @@ public class MainActivity extends AppCompatActivity {
         Log.d("129", "hello");
 
         if (savedInstanceState != null){
-//            listView.getItemAtPosition((Integer) savedInstanceState.get("position"));
-//            listView.setBackgroundColor(Color.GREEN);
-
-            Log.d("views 1", getViewByPosition(0, listView).getId() + "");
+            if (isLandSpace){
+                Product product = (Product) list.get((Integer) savedInstanceState.get("position"));
+                textView_info.setMovementMethod(new ScrollingMovementMethod());
+                textView_info.setText(Html.fromHtml(product.getInfo(), Html.FROM_HTML_MODE_COMPACT));
+            }
         }
 
-//        listView.getAdapter().getView(0, CustomAdapter.).setBackgroundColor(Color.GREEN);
-
-
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            getViewByPosition(0, listView).setBackgroundColor(Color.GREEN);
             Log.d("views 2", view.getId() + "");
             clickedItemID = position;
             Log.d("click 1", "here \n\n\n\n" + parent + "\n" + view + "\n" + position + "\n" + id);
