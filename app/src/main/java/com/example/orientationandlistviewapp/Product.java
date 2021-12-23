@@ -15,7 +15,7 @@ import java.net.URL;
 
 public class Product implements Parcelable {
     private int id;
-    private Document doc;
+    private Document doc, doc2;
     private String name;
     private String author;
     private String rating;
@@ -23,34 +23,44 @@ public class Product implements Parcelable {
     private String info;
 
 
-    Product(int id, Document doc) throws IOException {
+    Product(int id, Document doc, Document doc2) throws IOException {
         try {
             // id
             this.id = id;
 
             // doc
             this.doc = doc;
-            Elements elements = doc.select("main.LXrl4c");
+            this.doc2 = doc2;
+            Elements elements1 = doc.select("main.LXrl4c");
+            Elements elements2 = doc2.select("div.W4P4ne");
 
             // info
-            this.info = elements.select("div.DWPxHb span div").toString();
+            this.info = elements1.select("div.DWPxHb span div").toString();
 
 //            Log.d("info", info);
 //
             // name
-            this.name = elements.select("h1.AHFaub").text();
+            this.name = elements1.select("h1.AHFaub").text();
 
             // author
-            this.author = elements.select("a.hrTbp.R8zArc").get(0).text();
+            this.author = elements1.select("a.hrTbp.R8zArc").get(0).text();
 
             // rating
-            this.rating = elements.select(".pf5lIe div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "").trim();
+            this.rating = elements1.select(".pf5lIe div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "").trim();
             this.rating = (this.rating.equals("")) ? "N/A": this.rating;
 
             //image
-            String imageUrl = elements.select(".xSyT2c img").attr("src");
+            String imageUrl = elements1.select(".xSyT2c img").attr("src");
             InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
             this.image = Drawable.createFromStream(inputStream, null);
+
+            //comments
+            Log.d("58",
+                    ".\n\n\n\n\n\n" +
+                            doc2.select("div.W4P4ne")
+            );
+
+
 
         } catch (IOException e) {
             e.printStackTrace();

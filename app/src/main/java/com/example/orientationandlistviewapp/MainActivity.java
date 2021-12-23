@@ -113,17 +113,26 @@ public class MainActivity extends AppCompatActivity {
         int count = 0;
         for (Element element: elements){
             int id = ++count;
+            if (id == 2) break;
+
             String url = String.format("https://play.google.com%s&hl=en_US&gl=US", element.select(".wXUyZd a").attr("href"));
+            int finalCount = count;
             new Thread(() -> {
                 try {
                     Document doc = Jsoup.connect(url).get();
-                    list.add(new Product(id, doc));
+                    Document doc2 = Jsoup.connect(url + "&showAllReviews=true").get();
+                    list.add(new Product(id, doc, doc2));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }).start();
+
         }
-        while (list.size() < elements.size());
+//        while (list.size() < elements.size());
+        while (list.size() < 1){
+            Log.d("size", list.size() + "");
+
+        }
         list.sort(Comparator.comparingInt(Product::getId));
         listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
 
