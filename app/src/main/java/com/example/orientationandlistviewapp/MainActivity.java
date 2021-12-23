@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
-    ListView listView;
-    ArrayList<Product> list;
+    ListView listView, listView2;
+    ArrayList<Product> list, list2;
     Document document;
     EditText editText;
     Button button;
@@ -65,8 +65,10 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         if (savedInstanceState == null){
             list = new ArrayList<>();
+            list2 = new ArrayList<>();
         } else {
             list = (ArrayList) savedInstanceState.get("list");
+            list2 = (ArrayList) savedInstanceState.get("list");
             selectedProduct = (Product) savedInstanceState.get("product");
         }
         editText = findViewById(R.id.editTextTextPersonName3);
@@ -139,13 +141,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         toggleSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            textView_info.setText(isChecked + "");
             if (isChecked){
+                listView2 = findViewById(R.id.listView2);
                 viewSwitcher.showNext();
+                listView2.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
             } else {
                 viewSwitcher.showPrevious();
             }
-
         });
 
 
@@ -159,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
             clickedItemID = position;
-            selectedProduct = (Product) list.get(position);
+            selectedProduct = list.get(position);
             String author = selectedProduct.getAuthor();
 
             if (author.length() > 35) author = author.substring(0, 32) + "...";
