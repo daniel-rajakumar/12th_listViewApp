@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isLandSpace;
     TextView textView_by, textView_rating, textView_info;
     int clickedItemID;
+    boolean iteamSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
         }
         editText = findViewById(R.id.editTextTextPersonName3);
         button = findViewById(R.id.button3);
-        textView_rating = findViewById(R.id.textView6);
-        textView_by = findViewById(R.id.textView3);
+        textView_rating = findViewById(R.id.textView3);
+        textView_by = findViewById(R.id.textView6);
 
         if (isLandSpace) {
             textView_info = findViewById(R.id.textView2);
@@ -83,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             textView_by.setText(savedInstanceState.get("by").toString());
             textView_rating.setText(savedInstanceState.get("rating").toString());
+            iteamSelected = (boolean) savedInstanceState.get("selected");
+            Log.d("selected", iteamSelected + "");
             listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
         }
 
@@ -124,13 +127,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     void setListeners() throws IOException {
-        if (savedInstanceState != null && isLandSpace){
+        if (savedInstanceState != null && isLandSpace && iteamSelected){
             Product product = (Product) list.get((Integer) savedInstanceState.get("position"));
             textView_info.setMovementMethod(new ScrollingMovementMethod());
             textView_info.setText(Html.fromHtml(product.getInfo(), Html.FROM_HTML_MODE_COMPACT));
         }
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
+            iteamSelected = true;
             clickedItemID = position;
             Product product = (Product) list.get(position);
             String author = product.getAuthor();
@@ -157,7 +161,10 @@ public class MainActivity extends AppCompatActivity {
     void resetVariables(){
         textView_by.setText("By: ");
         textView_rating.setText(": Rating");
-        textView_info.setText("");
+        if (isLandSpace){
+            textView_info.setText("");
+        }
+        iteamSelected = false;
     }
 
 
@@ -182,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) list);
         outState.putString("by",  textView_by.getText().toString());
         outState.putString("rating",  textView_rating.getText().toString());
+        outState.putBoolean("selected",  iteamSelected);
         outState.putInt("position", clickedItemID);
     }
 }
