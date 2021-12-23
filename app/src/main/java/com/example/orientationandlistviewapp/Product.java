@@ -73,6 +73,7 @@ public class Product implements Parcelable {
                 String link2 = element.attr("data-src");
                 String link = link1 + link2;
                 imageLink.add(link);
+                Log.d("link", link);
             }
 
         } catch (IOException e) {

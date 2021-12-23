@@ -2,9 +2,11 @@ package com.example.orientationandlistviewapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -41,12 +43,17 @@ public class MainActivity extends AppCompatActivity {
     Product selectedProduct;
     Switch toggleSwitch;
     ViewSwitcher viewSwitcher;
+    ViewPager2 viewPager2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.savedInstanceState = savedInstanceState;
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
 
         isLandSpace = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 
@@ -150,13 +157,24 @@ public class MainActivity extends AppCompatActivity {
         toggleSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked){
                 viewSwitcher.showNext();
+                viewPager2 =  findViewById(R.id.viewPager);
+                ArrayList<SliderImage> sliderImages = new ArrayList<>();
+                sliderImages.add(new SliderImage("https://play-lh.googleusercontent.com/EeWLN8R1Pyb19RzDnMicyYcGpTVq-vx2OQMCBihRRST3Z339pY80q3FYv23lm_iKkkc=w720-h310-rw"));
+                sliderImages.add(new SliderImage("https://play-lh.googleusercontent.com/mHNaN0qLksn1oIHukWST6LnYkKzxRB9GdKcUag3GoCXtWWw2lkg7SAJxo9f0_zPDnnI=w720-h310-rw"));
+                sliderImages.add(new SliderImage("https://play-lh.googleusercontent.com/PSq-xfv-n29XJ9f2efkjpQ1er25P8nAzCIdsl_gSg2sbqM_5_0WlEKyOiEE4W55wLi9k=w720-h310-rw"));
+
+                viewPager2.setAdapter(new SliderAdapter(sliderImages, viewPager2));
+
             } else {
                 viewSwitcher.showPrevious();
             }
         });
 
-
     }
+
+
+
+
 
     void setListeners() throws IOException {
         if (savedInstanceState != null && isLandSpace && (selectedProduct != null)){
@@ -224,5 +242,6 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt("position", clickedItemID);
         outState.putParcelable("product", selectedProduct);
     }
+
 }
 
