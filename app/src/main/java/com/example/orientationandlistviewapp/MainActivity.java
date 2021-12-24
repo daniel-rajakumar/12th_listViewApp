@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
         int count = 0;
         for (Element element: elements){
             int id = ++count;
-            if (id == 2) break;
 
             String url = String.format("https://play.google.com%s&hl=en_US&gl=US", element.select(".wXUyZd a").attr("href"));
             new Thread(() -> {
@@ -133,11 +132,9 @@ public class MainActivity extends AppCompatActivity {
             }).start();
 
         }
-//        while (list.size() < elements.size());
-        while (list.size() < 1){
-            Log.d("size", list.size() + "");
+        while (list.size() < elements.size());
+//        while (list.size() < 1){ Log.d("size", list.size() + ""); }
 
-        }
         list.sort(Comparator.comparingInt(Product::getId));
         listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
 
@@ -152,19 +149,13 @@ public class MainActivity extends AppCompatActivity {
     void setToggleButton(){
         toggleSwitch = findViewById(R.id.switch2);
         viewSwitcher = findViewById(R.id.viewSwitcher);
+        viewPager2 =  findViewById(R.id.viewPager);
 
 
         toggleSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked){
+//        viewPager2.setAdapter(new SliderAdapter(this, viewPager2));
                 viewSwitcher.showNext();
-                viewPager2 =  findViewById(R.id.viewPager);
-                ArrayList<SliderImage> sliderImages = new ArrayList<>();
-                sliderImages.add(new SliderImage("https://play-lh.googleusercontent.com/EeWLN8R1Pyb19RzDnMicyYcGpTVq-vx2OQMCBihRRST3Z339pY80q3FYv23lm_iKkkc=w720-h310-rw"));
-                sliderImages.add(new SliderImage("https://play-lh.googleusercontent.com/mHNaN0qLksn1oIHukWST6LnYkKzxRB9GdKcUag3GoCXtWWw2lkg7SAJxo9f0_zPDnnI=w720-h310-rw"));
-                sliderImages.add(new SliderImage("https://play-lh.googleusercontent.com/PSq-xfv-n29XJ9f2efkjpQ1er25P8nAzCIdsl_gSg2sbqM_5_0WlEKyOiEE4W55wLi9k=w720-h310-rw"));
-
-                viewPager2.setAdapter(new SliderAdapter(sliderImages, viewPager2));
-
             } else {
                 viewSwitcher.showPrevious();
             }
@@ -195,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
             textView1.setText("By: " + author);
             textView2.setText(selectedProduct.getRating() + " :Rating");
 
+            viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderImages(), viewPager2));
             if (isLandSpace) {
                 textView_info.setMovementMethod(new ScrollingMovementMethod());
                 textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));

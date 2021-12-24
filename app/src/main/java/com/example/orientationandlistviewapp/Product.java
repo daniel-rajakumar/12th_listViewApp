@@ -24,6 +24,7 @@ public class Product implements Parcelable {
     private Drawable image;
     private String info;
     private ArrayList<String> imageLink;
+    private ArrayList<SliderImage> sliderImages;
 
 
 
@@ -76,6 +77,13 @@ public class Product implements Parcelable {
                 Log.d("link", link);
             }
 
+
+            // set images
+            this.sliderImages = new ArrayList<>();
+            for (String url: imageLink){
+                sliderImages.add(new SliderImage(url));
+
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -124,6 +132,11 @@ public class Product implements Parcelable {
     public ArrayList<String> getImageLink() {
         return imageLink;
     }
+
+    public ArrayList<SliderImage> getSliderImages() {
+        return sliderImages;
+    }
+
 
     @Override
     public int describeContents() {
