@@ -1,5 +1,6 @@
 package com.example.orientationandlistviewapp;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -12,28 +13,32 @@ import java.util.ArrayList;
 
 public class SliderAdapter extends RecyclerView.Adapter<SliderViewHolder> {
 
-    private ArrayList<SliderImage> sliderImages;
+    private ArrayList<SliderPreview> sliderPreview;
     private ViewPager2 viewPager2;
 
-    SliderAdapter(ArrayList<SliderImage> sliderImages, ViewPager2 viewPager2) {
-        this.sliderImages = sliderImages;
+    SliderAdapter(ArrayList<SliderPreview> sliderPreview, ViewPager2 viewPager2) {
+        this.sliderPreview = sliderPreview;
         this.viewPager2 = viewPager2;
     }
 
     @NonNull
     @Override
     public SliderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new SliderViewHolder(LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.slide_image_container,
+//        Log.d("videoView", parent + "");
+        return new SliderViewHolder(
+            LayoutInflater.from(parent.getContext()).inflate(
+//                R.layout.slide_image_container,
+                R.layout.slide_video_container,
                 parent,
                 false
-        ));
+            )
+        );
     }
 
     @Override
     public void onBindViewHolder(@NonNull SliderViewHolder holder, int position) {
         try {
-            holder.setImage(sliderImages.get(position));
+            holder.setPreview(sliderPreview.get(position));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,7 +46,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderViewHolder> {
 
     @Override
     public int getItemCount() {
-        return sliderImages.size();
+        return sliderPreview.size();
     }
 
 }

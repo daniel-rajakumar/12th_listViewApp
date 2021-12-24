@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Html;
@@ -197,17 +199,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
     void resetVariables(){
         textView_by.setText("By: ");
         textView_rating.setText(": Rating");
         if (isLandSpace){
             textView_info.setText("");
-        }
-        selectedProduct = null;
-        if (isLandSpace){
             viewPager2.setAdapter(null);
         }
+        selectedProduct = null;
     }
 
 

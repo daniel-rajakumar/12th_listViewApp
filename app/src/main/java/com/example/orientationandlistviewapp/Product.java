@@ -3,7 +3,6 @@ package com.example.orientationandlistviewapp;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,7 +23,7 @@ public class Product implements Parcelable {
     private String info;
     private String videoLink;
     private ArrayList<String> imageLinks;
-    private ArrayList<SliderImage> sliderImages;
+    private ArrayList<SliderPreview> sliderImages;
 
 
 
@@ -74,6 +73,10 @@ public class Product implements Parcelable {
             imageLinks = new ArrayList<>();
             Elements links = doc.select("img.T75of.DYfLw");
 
+
+            this.sliderImages = new ArrayList<>();
+            sliderImages.add(new SliderPreview("https://www.youtube.com/embed/MOtwT6Uv9GM?ps=play&amp;vq=large&amp;rel=0&amp;autohide=1&amp;showinfo=0", false));
+
             for (Element element: links){
                 String link1 = element.attr("src");
                 if (link1.startsWith("data")) link1 = "";
@@ -87,9 +90,8 @@ public class Product implements Parcelable {
             }
 
             // set images
-            this.sliderImages = new ArrayList<>();
             for (String url: imageLinks){
-                sliderImages.add(new SliderImage(url));
+                sliderImages.add(new SliderPreview(url, true));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -140,7 +142,7 @@ public class Product implements Parcelable {
         return imageLinks;
     }
 
-    public ArrayList<SliderImage> getSliderImages() {
+    public ArrayList<SliderPreview> getSliderImages() {
         return sliderImages;
     }
 
