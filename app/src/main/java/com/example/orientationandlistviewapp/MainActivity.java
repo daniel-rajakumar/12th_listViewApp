@@ -30,7 +30,7 @@ import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
     ListView listView, listView2;
-    ArrayList<Product> list, list2;
+    ArrayList<Product> list;
     Document document;
     EditText editText;
     Button button;
@@ -72,10 +72,8 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         if (savedInstanceState == null){
             list = new ArrayList<>();
-            list2 = new ArrayList<>();
         } else {
-            list = (ArrayList) savedInstanceState.get("list");
-            list2 = (ArrayList) savedInstanceState.get("list");
+            list = (ArrayList<Product>) savedInstanceState.get("list");
             selectedProduct = (Product) savedInstanceState.get("product");
         }
         editText = findViewById(R.id.editTextTextPersonName3);
@@ -154,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
 
         toggleSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked){
-//        viewPager2.setAdapter(new SliderAdapter(this, viewPager2));
                 viewSwitcher.showNext();
             } else {
                 viewSwitcher.showPrevious();
@@ -187,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
             textView2.setText(selectedProduct.getRating() + " :Rating");
 
             viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderImages(), viewPager2));
+
             if (isLandSpace) {
                 textView_info.setMovementMethod(new ScrollingMovementMethod());
                 textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
@@ -205,6 +203,8 @@ public class MainActivity extends AppCompatActivity {
             textView_info.setText("");
         }
         selectedProduct = null;
+        viewPager2.setAdapter(null);
+
     }
 
 
