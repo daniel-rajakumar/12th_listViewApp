@@ -25,7 +25,7 @@ public class SliderViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         imageView = itemView.findViewById(R.id.imageSlide);
         videoView = itemView.findViewById(R.id.videoSlide);
-        Log.d("videoView", videoView + "");
+//        Log.d("videoView", videoView + "");
     }
 
     void setPreview(SliderPreview sliderPreview) throws IOException {
@@ -36,7 +36,7 @@ public class SliderViewHolder extends RecyclerView.ViewHolder {
         } else {
 //            String imageUrl = sliderImage.getUrl();
 //            InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
-            Log.d("videoView", sliderPreview.getUrl().substring(30, 41) + "");
+//            Log.d("videoView", sliderPreview.getUrl().substring(30, 41) + "");
 
             videoView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
                 @Override

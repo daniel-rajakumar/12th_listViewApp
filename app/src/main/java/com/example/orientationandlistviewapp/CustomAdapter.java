@@ -37,7 +37,7 @@ class CustomAdapter extends ArrayAdapter<Product> {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View adapterLayout = layoutInflater.inflate(xmlResource, null);
         LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
-        Log.d("custom", linearLayout.toString());
+//        Log.d("custom", linearLayout.toString());
     }
 
 

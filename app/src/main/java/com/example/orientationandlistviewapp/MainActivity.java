@@ -4,17 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Switch;
@@ -95,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 textView_by.setText(selectedProduct.getAuthor());
                 textView_rating.setText(selectedProduct.getRating());
             }
-            Log.d("selected", selectedProduct + "");
+//            Log.d("selected", selectedProduct + "");
             listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
         }
 
@@ -120,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         int count = 0;
         for (Element element: elements){
             int id = ++count;
-//            if (count == 2) break;
+            if (count == 2) break;
 
             String url = String.format("https://play.google.com%s&hl=en_US&gl=US", element.select(".wXUyZd a").attr("href"));
             new Thread(() -> {
@@ -133,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
             }).start();
 
         }
-        while (list.size() < elements.size());
-//        while (list.size() < 1);
+//        while (list.size() < elements.size());
+        while (list.size() < 1);
 
         list.sort(Comparator.comparingInt(Product::getId));
         listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
@@ -171,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState != null && isLandSpace && (selectedProduct != null)){
             textView_info.setMovementMethod(new ScrollingMovementMethod());
             textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
-            viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderImages(), viewPager2));
+            viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderPreview(), viewPager2));
         }
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
@@ -191,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
             if (isLandSpace) {
                 textView_info.setMovementMethod(new ScrollingMovementMethod());
                 textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
-                viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderImages(), viewPager2));
+                viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderPreview(), viewPager2));
             }
         });
     }

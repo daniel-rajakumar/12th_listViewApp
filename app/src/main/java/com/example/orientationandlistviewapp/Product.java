@@ -3,6 +3,7 @@ package com.example.orientationandlistviewapp;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -23,7 +24,7 @@ public class Product implements Parcelable {
     private String info;
     private String videoLink;
     private ArrayList<String> imageLinks;
-    private ArrayList<SliderPreview> sliderImages;
+    private ArrayList<SliderPreview> sliderPreview;
 
 
 
@@ -57,15 +58,17 @@ public class Product implements Parcelable {
             this.image = Drawable.createFromStream(inputStream, null);
 
             //url
-//            Log.d("doc",
-//                  ".\n" +
-////                   doc.select("div.SgoUSc .Q4vdJd").select("img.T75of.DYfLw")
-////                    doc.select("div.TdqJUe")
-//                    doc.select(".MMZjL.lgooh").attr("data-trailer-url")
-//            );
+            Log.d("doc",
+                  ".\n" +
+//                   doc.select("div.SgoUSc .Q4vdJd").select("img.T75of.DYfLw")
+//                    doc.select("div.TdqJUe")
+                    doc
+            );
 
             // video link
+            this.sliderPreview = new ArrayList<>();
             videoLink = doc.select(".MMZjL.lgooh").attr("data-trailer-url");
+
 
 
 
@@ -73,11 +76,6 @@ public class Product implements Parcelable {
             imageLinks = new ArrayList<>();
             Elements links = doc.select("img.T75of.DYfLw");
 
-
-            this.sliderImages = new ArrayList<>();
-            if (!videoLink.equals("")){
-                sliderImages.add(new SliderPreview(videoLink, false));
-            }
 
             for (Element element: links){
                 String link1 = element.attr("src");
@@ -91,9 +89,18 @@ public class Product implements Parcelable {
                 imageLinks.remove(0);
             }
 
+
+
+
+
             // set images
             for (String url: imageLinks){
-                sliderImages.add(new SliderPreview(url, true));
+                sliderPreview.add(new SliderPreview(url, true));
+            }
+
+            // set video
+            if (!videoLink.equals("")){
+                sliderPreview.add(0, new SliderPreview(videoLink, false));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -148,8 +155,8 @@ public class Product implements Parcelable {
         return imageLinks;
     }
 
-    public ArrayList<SliderPreview> getSliderImages() {
-        return sliderImages;
+    public ArrayList<SliderPreview> getSliderPreview() {
+        return sliderPreview;
     }
 
 
