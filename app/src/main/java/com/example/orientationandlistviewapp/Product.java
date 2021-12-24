@@ -26,6 +26,7 @@ public class Product implements Parcelable {
     private String videoLink;
     private ArrayList<String> imageLinks;
     private ArrayList<SliderPreview> sliderPreview;
+    private ArrayList<Users> users;
 
 
 
@@ -65,6 +66,8 @@ public class Product implements Parcelable {
 //                    doc2.body().getElementsByTag("script")
 //            );
 
+            //comments
+            users = new ArrayList<>();
             Elements elements2 = doc2.body().getElementsByTag("script");
 
 //            Log.d("doc", "size" + elements2.size());
@@ -81,14 +84,17 @@ public class Product implements Parcelable {
                             String userName =  pattern0[0];
                             String link =  pattern1[0].replace("\"", "").split("\\\\u")[0];
                             String comment = pattern2[0].replace("\"", "");
+
+                            users.add(new Users(userName, link, comment));
+
 //                            String comment = arr2[5].substring(arr2[5].indexOf("\""), arr2[5].lastIndexOf("\""));
 //                            Log.d("doc", i + " -> " + Arrays.toString(arr2));
-                            Log.d("doc",
-                                    ".\nname: " + userName + "\n" +
-                                         "link: " + link + "\n" +
-                                         "comment: " + comment + "\n."
-                            );
-
+//                            Log.d("doc",
+//                                    ".\nname: " + userName + "\n" +
+//                                         "link: " + link + "\n" +
+//                                         "comment: " + comment + "\n."
+//                            );
+//
 //                            String[] patter2 = pattern[1].split("]]],[0-9]+,null,");
 //                            Log.d("doc", patter2[1].split(",\\[[0-9]+,[0-9]+\\],[0-9]+,null,null,")[0]);
 
@@ -223,5 +229,31 @@ public class Product implements Parcelable {
         dest.writeString(author);
         dest.writeString(rating);
         dest.writeString(info);
+    }
+
+
+
+    class Users {
+        String name;
+        String profileLink;
+        String comment;
+
+        Users(String name, String profileLink, String comment){
+            this.name = name;
+            this.profileLink = profileLink;
+            this.comment = comment;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getComment() {
+            return comment;
+        }
+
+        public String getProfileLink() {
+            return profileLink;
+        }
     }
 }
