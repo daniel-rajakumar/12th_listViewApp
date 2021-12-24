@@ -24,8 +24,11 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) return 2;
-        else return 1;
+        if (sliderPreview.get(position).isImage()) return 1;
+        return 2;
+//        Log.d("item", sliderPreview.get(position).isImage() + "");
+//        if (position == 0) return 2;
+//        else return 1;
 
     }
 

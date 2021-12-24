@@ -75,7 +75,9 @@ public class Product implements Parcelable {
 
 
             this.sliderImages = new ArrayList<>();
-            sliderImages.add(new SliderPreview("https://www.youtube.com/embed/MOtwT6Uv9GM?ps=play&amp;vq=large&amp;rel=0&amp;autohide=1&amp;showinfo=0", false));
+            if (!videoLink.equals("")){
+                sliderImages.add(new SliderPreview(videoLink, false));
+            }
 
             for (Element element: links){
                 String link1 = element.attr("src");
@@ -136,6 +138,10 @@ public class Product implements Parcelable {
 
     public Drawable getImage() {
         return image;
+    }
+
+    public String getVideoLink() {
+        return videoLink;
     }
 
     public ArrayList<String> getImageLinks() {

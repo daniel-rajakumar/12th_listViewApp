@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         int count = 0;
         for (Element element: elements){
             int id = ++count;
-            if (count == 2) break;
+//            if (count == 2) break;
 
             String url = String.format("https://play.google.com%s&hl=en_US&gl=US", element.select(".wXUyZd a").attr("href"));
             new Thread(() -> {
@@ -133,8 +133,8 @@ public class MainActivity extends AppCompatActivity {
             }).start();
 
         }
-//        while (list.size() < elements.size());
-        while (list.size() < 1);
+        while (list.size() < elements.size());
+//        while (list.size() < 1);
 
         list.sort(Comparator.comparingInt(Product::getId));
         listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
