@@ -222,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
             name = editText.getText().toString();
             url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
             try {
+
                 getWebsite();
                 updateList();
                 resetVariables();
