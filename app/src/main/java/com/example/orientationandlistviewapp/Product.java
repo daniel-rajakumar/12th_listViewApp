@@ -13,10 +13,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Product implements Parcelable {
     private int id;
-    private Document doc;
+    private Document doc, doc2;
     private String name;
     private String author;
     private String rating;
@@ -28,13 +29,14 @@ public class Product implements Parcelable {
 
 
 
-    Product(int id, Document doc) throws IOException {
+    Product(int id, Document doc, Document doc2) throws IOException {
         try {
             // id
             this.id = id;
 
             // doc
             this.doc = doc;
+            this.doc2 = doc2;
             Elements elements1 = doc.select("main.LXrl4c");
 
             // info
@@ -58,12 +60,53 @@ public class Product implements Parcelable {
             this.image = Drawable.createFromStream(inputStream, null);
 
             //url
-            Log.d("doc",
-                  ".\n" +
-//                   doc.select("div.SgoUSc .Q4vdJd").select("img.T75of.DYfLw")
-//                    doc.select("div.TdqJUe")
-                    doc
-            );
+//            Log.d("doc",
+//                  ".\n" +
+//                    doc2.body().getElementsByTag("script")
+//            );
+
+            Elements elements2 = doc2.body().getElementsByTag("script");
+
+//            Log.d("doc", "size" + elements2.size());
+            for (int i = 0; i < elements2.size(); i++){
+                String str = elements2.get(i).toString();
+                if (str.contains("https://play-lh.googleusercontent.com/a-/")){
+                    String[] arr = str.split("\\[\"");
+                    for (String a: arr){
+                        if (a.endsWith(",null,null,")){
+                            String[] pattern0 = a.split("\",\\[null,[0-9]+,null,\\[null,null,");
+                            String[] pattern1 = pattern0[1].split("]]],[0-9]+,null,");
+                            String[] pattern2 = pattern1[1].split(",\\[[0-9]+,[0-9]+\\],[0-9]+,null,null,");
+
+                            String userName =  pattern0[0];
+                            String link =  pattern1[0].replace("\"", "").split("\\\\u")[0];
+                            String comment = pattern2[0].replace("\"", "");
+//                            String comment = arr2[5].substring(arr2[5].indexOf("\""), arr2[5].lastIndexOf("\""));
+//                            Log.d("doc", i + " -> " + Arrays.toString(arr2));
+                            Log.d("doc",
+                                    ".\nname: " + userName + "\n" +
+                                         "link: " + link + "\n" +
+                                         "comment: " + comment + "\n."
+                            );
+
+//                            String[] patter2 = pattern[1].split("]]],[0-9]+,null,");
+//                            Log.d("doc", patter2[1].split(",\\[[0-9]+,[0-9]+\\],[0-9]+,null,null,")[0]);
+
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
 
             // video link
             this.sliderPreview = new ArrayList<>();
