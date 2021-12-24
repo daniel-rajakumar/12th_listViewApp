@@ -21,14 +21,24 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderViewHolder> {
         this.viewPager2 = viewPager2;
     }
 
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) return 2;
+        else return 1;
+
+    }
+
     @NonNull
     @Override
     public SliderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        Log.d("videoView", parent + "");
+        int typeId = -1;
+        if (viewType == 1) typeId = R.layout.slide_image_container;
+        if (viewType == 2) typeId = R.layout.slide_video_container;
+
         return new SliderViewHolder(
             LayoutInflater.from(parent.getContext()).inflate(
-//                R.layout.slide_image_container,
-                R.layout.slide_video_container,
+                typeId,
                 parent,
                 false
             )

@@ -32,7 +32,7 @@ public class SliderViewHolder extends RecyclerView.ViewHolder {
         if (sliderPreview.isImage()){
             String imageUrl = sliderPreview.getUrl();
             InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
-//            imageView.setImageDrawable(Drawable.createFromStream(inputStream, null));
+            imageView.setImageDrawable(Drawable.createFromStream(inputStream, null));
         } else {
 //            String imageUrl = sliderImage.getUrl();
 //            InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
