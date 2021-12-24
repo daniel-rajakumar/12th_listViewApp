@@ -3,7 +3,6 @@ package com.example.orientationandlistviewapp;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Product implements Parcelable {
     private int id;
@@ -26,7 +24,7 @@ public class Product implements Parcelable {
     private String videoLink;
     private ArrayList<String> imageLinks;
     private ArrayList<SliderPreview> sliderPreview;
-    private ArrayList<Users> users;
+    private ArrayList<UserReviews> userReviews;
 
 
 
@@ -67,7 +65,7 @@ public class Product implements Parcelable {
 //            );
 
             //comments
-            users = new ArrayList<>();
+            userReviews = new ArrayList<>();
             Elements elements2 = doc2.body().getElementsByTag("script");
 
 //            Log.d("doc", "size" + elements2.size());
@@ -85,8 +83,7 @@ public class Product implements Parcelable {
                             String link =  pattern1[0].replace("\"", "").split("\\\\u")[0];
                             String comment = pattern2[0].replace("\"", "");
 
-                            users.add(new Users(userName, link, comment));
-
+                            userReviews.add(new UserReviews(userName, link, comment));
 //                            String comment = arr2[5].substring(arr2[5].indexOf("\""), arr2[5].lastIndexOf("\""));
 //                            Log.d("doc", i + " -> " + Arrays.toString(arr2));
 //                            Log.d("doc",
@@ -233,12 +230,12 @@ public class Product implements Parcelable {
 
 
 
-    class Users {
+    class UserReviews {
         String name;
         String profileLink;
         String comment;
 
-        Users(String name, String profileLink, String comment){
+        UserReviews(String name, String profileLink, String comment){
             this.name = name;
             this.profileLink = profileLink;
             this.comment = comment;
