@@ -5,7 +5,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -23,7 +22,8 @@ public class Product implements Parcelable {
     private String rating;
     private Drawable image;
     private String info;
-    private ArrayList<String> imageLink;
+    private String videoLink;
+    private ArrayList<String> imageLinks;
     private ArrayList<SliderImage> sliderImages;
 
 
@@ -61,11 +61,17 @@ public class Product implements Parcelable {
 //            Log.d("doc",
 //                  ".\n" +
 ////                   doc.select("div.SgoUSc .Q4vdJd").select("img.T75of.DYfLw")
-//                    doc.select("img.T75of.DYfLw")
+////                    doc.select("div.TdqJUe")
+//                    doc.select(".MMZjL.lgooh").attr("data-trailer-url")
 //            );
 
+            // video link
+            videoLink = doc.select(".MMZjL.lgooh").attr("data-trailer-url");
+
+
+
             // image links
-            imageLink = new ArrayList<>();
+            imageLinks = new ArrayList<>();
             Elements links = doc.select("img.T75of.DYfLw");
 
             for (Element element: links){
@@ -73,16 +79,17 @@ public class Product implements Parcelable {
                 if (link1.startsWith("data")) link1 = "";
                 String link2 = element.attr("data-src");
                 String link = link1 + link2;
-                imageLink.add(link);
-                Log.d("link", link);
+                imageLinks.add(link);
             }
 
+            if (!videoLink.equals("")) {
+                imageLinks.remove(0);
+            }
 
             // set images
             this.sliderImages = new ArrayList<>();
-            for (String url: imageLink){
+            for (String url: imageLinks){
                 sliderImages.add(new SliderImage(url));
-
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -129,8 +136,8 @@ public class Product implements Parcelable {
         return image;
     }
 
-    public ArrayList<String> getImageLink() {
-        return imageLink;
+    public ArrayList<String> getImageLinks() {
+        return imageLinks;
     }
 
     public ArrayList<SliderImage> getSliderImages() {

@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         int count = 0;
         for (Element element: elements){
             int id = ++count;
+            if (count == 2) break;
 
             String url = String.format("https://play.google.com%s&hl=en_US&gl=US", element.select(".wXUyZd a").attr("href"));
             new Thread(() -> {
@@ -130,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
             }).start();
 
         }
-        while (list.size() < elements.size());
-//        while (list.size() < 1){ Log.d("size", list.size() + ""); }
+//        while (list.size() < elements.size());
+        while (list.size() < 1);
 
         list.sort(Comparator.comparingInt(Product::getId));
         listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
@@ -168,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState != null && isLandSpace && (selectedProduct != null)){
             textView_info.setMovementMethod(new ScrollingMovementMethod());
             textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
+            viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderImages(), viewPager2));
         }
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
@@ -183,11 +185,11 @@ public class MainActivity extends AppCompatActivity {
             textView1.setText("By: " + author);
             textView2.setText(selectedProduct.getRating() + " :Rating");
 
-            viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderImages(), viewPager2));
 
             if (isLandSpace) {
                 textView_info.setMovementMethod(new ScrollingMovementMethod());
                 textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
+                viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderImages(), viewPager2));
             }
         });
     }
@@ -203,8 +205,9 @@ public class MainActivity extends AppCompatActivity {
             textView_info.setText("");
         }
         selectedProduct = null;
-        viewPager2.setAdapter(null);
-
+        if (isLandSpace){
+            viewPager2.setAdapter(null);
+        }
     }
 
 
