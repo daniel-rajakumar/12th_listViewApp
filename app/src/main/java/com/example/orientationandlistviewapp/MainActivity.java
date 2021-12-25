@@ -6,13 +6,13 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -219,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
             selectedProduct = list.get(position);
             String author = selectedProduct.getAuthor();
 
+
             if (author.length() > 35) author = author.substring(0, 32) + "...";
 
             TextView textView1 = findViewById(R.id.textView6);
@@ -227,6 +228,11 @@ public class MainActivity extends AppCompatActivity {
             textView1.setText("By: " + author);
             textView2.setText(selectedProduct.getRating() + " :Rating");
 
+            if (Product.getSelectedIndex() != -1){
+                getViewByPosition(Product.getSelectedIndex(), listView) .setBackground(getResources().getDrawable(R.drawable.custom_applist));
+            }
+            Product.setSelectedIndex(position);
+            view.setBackground(getResources().getDrawable(R.drawable.custom_applist_selected));
 
             if (isLandSpace) {
                 ListView listView_comments = findViewById(R.id.listview_comment);
@@ -240,6 +246,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public View getViewByPosition(int position, ListView listView) {
+        int firstListItemPosition = listView.getFirstVisiblePosition();
+        int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+        if (position < firstListItemPosition || position > lastListItemPosition ) {
+            return listView.getAdapter().getView(position, null, listView);
+        } else {
+            int childIndex = position - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
+    }
 
 
 
@@ -251,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
             viewPager2.setAdapter(null);
         }
         selectedProduct = null;
+        Product.setSelectedIndex(-1);
     }
 
 

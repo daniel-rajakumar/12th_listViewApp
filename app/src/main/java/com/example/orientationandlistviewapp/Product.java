@@ -1,12 +1,10 @@
 package com.example.orientationandlistviewapp;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
-import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.ListView;
 
 import org.jsoup.nodes.Document;
@@ -31,6 +29,7 @@ public class Product implements Parcelable  {
     private ArrayList<SliderPreview> sliderPreview;
     private ArrayList<UserReviews> userReviews;
     private ListView listView;
+    private static int selectedIndex = -1;
 
 
 
@@ -66,15 +65,18 @@ public class Product implements Parcelable  {
 
             //url
 //            Log.d("doc",
-//                  ".\n" +
-//                    doc2.body().getElementsByTag("script")
+//                  ".\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n." +
+////                    doc2.body().getElementsByTag("script")
+//                    doc2
 //            );
+
+
 
             //comments
             userReviews = new ArrayList<>();
             Elements elements2 = doc2.body().getElementsByTag("script");
 
-//            Log.d("doc", "size" + elements2.size());
+
             for (int i = 0; i < elements2.size(); i++){
                 String str = elements2.get(i).toString();
                 if (str.contains("https://play-lh.googleusercontent.com/a-/")){
@@ -230,6 +232,15 @@ public class Product implements Parcelable  {
 
     public ArrayList<UserReviews> getUserReviews() {
         return userReviews;
+    }
+
+
+    public static int getSelectedIndex() {
+        return selectedIndex;
+    }
+
+    public static void setSelectedIndex(int selectedIndex) {
+        Product.selectedIndex = selectedIndex;
     }
 
     @Override

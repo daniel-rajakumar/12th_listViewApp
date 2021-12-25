@@ -14,6 +14,7 @@
 
     <color name="main_font">#ffffff</color>
     <color name="main_font_tint">#555555</color>
+    <color name="selected_app">#999999</color>
 
 
     <color name="trash">#e54848</color>

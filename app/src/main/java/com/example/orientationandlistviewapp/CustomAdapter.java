@@ -2,10 +2,7 @@ package com.example.orientationandlistviewapp;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 class CustomAdapter extends ArrayAdapter<Product> {
@@ -55,6 +49,7 @@ class CustomAdapter extends ArrayAdapter<Product> {
         TextView textView = adapterLayout.findViewById(R.id.textView);
         ImageView imageView = adapterLayout.findViewById(R.id.imageView);
         TextView _textView = null;
+        LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
 
         if (mainActivity.isLandSpace) {
             _textView = mainActivity.findViewById(R.id.textView2);
@@ -64,6 +59,10 @@ class CustomAdapter extends ArrayAdapter<Product> {
         Product product = list.get(position);
         textView.setText(product.getName());
         imageView.setImageDrawable(product.getImage());
+
+        if (Product.getSelectedIndex() == position){
+                linearLayout.setBackground(adapterLayout.getResources().getDrawable(R.drawable.custom_applist_selected));
+        }
 
         button.setOnClickListener(view -> {
             list.remove(position);
