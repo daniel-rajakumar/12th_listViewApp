@@ -162,8 +162,10 @@
             </androidx.viewpager2.widget.ViewPager2>
 
             <ListView
+                android:id="@+id/listview_comment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
         </ViewFlipper>
 
     </LinearLayout>

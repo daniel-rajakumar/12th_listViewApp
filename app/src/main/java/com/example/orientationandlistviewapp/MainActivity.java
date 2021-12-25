@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     RadioGroup radioGroup;
     ViewFlipper viewFlipper;
     ViewPager2 viewPager2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Document doc = Jsoup.connect(url).get();
                     Document doc2 = Jsoup.connect(url + "&showAllReviews=true").get();
-                    list.add(new Product(id, doc, doc2));
+                    list.add(new Product(this, this, id, doc, doc2));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -179,17 +181,10 @@ public class MainActivity extends AppCompatActivity {
         viewFlipper = findViewById(R.id.viewSwitcher);
         viewPager2 =  findViewById(R.id.viewPager);
 
-        // PURE ART
         radioGroup.setOnCheckedChangeListener((group, checkedId) ->
             viewFlipper.setDisplayedChild(
-                viewFlipper.indexOfChild(
-                    viewFlipper.getChildAt(
-                        radioGroup.indexOfChild(
-                            findViewById(
-                                checkedId
-                            )
-                        )
-                    )
+                radioGroup.indexOfChild(
+                    findViewById(checkedId)
                 )
             )
         );
@@ -221,9 +216,13 @@ public class MainActivity extends AppCompatActivity {
 
 
             if (isLandSpace) {
+                ListView listView_comments = findViewById(R.id.listview_comment);
+
                 textView_info.setMovementMethod(new ScrollingMovementMethod());
                 textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
                 viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderPreview(), viewPager2));
+                Product product = list.get(position);
+                listView_comments.setAdapter(new CustomAdapter_customer(this, this, R.layout.adapter_layout_comments, product.getUserReviews()));
             }
         });
     }
@@ -269,6 +268,5 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt("position", clickedItemID);
         outState.putParcelable("product", selectedProduct);
     }
-
 }
 

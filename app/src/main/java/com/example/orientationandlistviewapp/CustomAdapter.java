@@ -13,12 +13,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 class CustomAdapter extends ArrayAdapter<Product> {
@@ -52,8 +54,6 @@ class CustomAdapter extends ArrayAdapter<Product> {
         Button button = adapterLayout.findViewById(R.id.button);
         TextView textView = adapterLayout.findViewById(R.id.textView);
         ImageView imageView = adapterLayout.findViewById(R.id.imageView);
-        TextView textView1 = mainActivity.findViewById(R.id.textView6);
-        TextView textView2 = mainActivity.findViewById(R.id.textView3);
         TextView _textView = null;
 
         if (mainActivity.isLandSpace) {
@@ -64,7 +64,6 @@ class CustomAdapter extends ArrayAdapter<Product> {
         Product product = list.get(position);
         textView.setText(product.getName());
         imageView.setImageDrawable(product.getImage());
-
 
         button.setOnClickListener(view -> {
             list.remove(position);

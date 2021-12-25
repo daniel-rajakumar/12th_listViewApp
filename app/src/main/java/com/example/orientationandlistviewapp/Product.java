@@ -1,8 +1,13 @@
 package com.example.orientationandlistviewapp;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,7 +18,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class Product implements Parcelable {
+public class Product implements Parcelable  {
     private int id;
     private Document doc, doc2;
     private String name;
@@ -25,10 +30,11 @@ public class Product implements Parcelable {
     private ArrayList<String> imageLinks;
     private ArrayList<SliderPreview> sliderPreview;
     private ArrayList<UserReviews> userReviews;
+    private ListView listView;
 
 
 
-    Product(int id, Document doc, Document doc2) throws IOException {
+    Product(MainActivity mainActivity, Context context, int id, Document doc, Document doc2) throws IOException {
         try {
             // id
             this.id = id;
@@ -102,7 +108,10 @@ public class Product implements Parcelable {
 
 
 
-
+            mainActivity.runOnUiThread(() -> {
+//                listView = mainActivity.findViewById(R.id.listview_comment);
+//                listView.setAdapter(new CustomAdapter_customer(mainActivity, context, R.layout.adapter_layout_comments, userReviews));
+            });
 
 
 
@@ -205,6 +214,9 @@ public class Product implements Parcelable {
         return sliderPreview;
     }
 
+    public ArrayList<UserReviews> getUserReviews() {
+        return userReviews;
+    }
 
     @Override
     public int describeContents() {
