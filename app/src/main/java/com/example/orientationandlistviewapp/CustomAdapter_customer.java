@@ -56,7 +56,7 @@ class CustomAdapter_customer extends ArrayAdapter<Product.UserReviews> {
 
         textView2.setText(product.getName());
         textView.setText(product.getComment());
-        ratingBar.setRating(Integer.parseInt(product.getStars()));
+        ratingBar.setRating(product.getStars());
 
         try {
             String imageUrl = product.getProfileLink();
