@@ -12,7 +12,7 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:background="@drawable/custom_commentlist"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,7 +40,7 @@
             android:id="@+id/textView_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="40dp"
             android:text="Name"
             android:textColor="@color/main_font"
             android:textSize="20sp"
@@ -50,16 +50,26 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageView
-        android:id="@+id/imageView_comment"
+    <androidx.cardview.widget.CardView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:contentDescription="TODO"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_launcher_background"
+        android:elevation="12dp"
+        app:cardCornerRadius="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <ImageView
+            android:id="@+id/imageView_comment"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="TODO"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_launcher_background"
+            />
+
+
+    </androidx.cardview.widget.CardView>
 
     <RatingBar
         android:id="@+id/ratingBar_comment"
