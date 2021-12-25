@@ -126,13 +126,13 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="3dp"
                 android:layout_marginTop="0dp"
                 android:padding="4dp"
                 android:scrollbars="vertical"
                 android:text=""
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/main_font"
+                android:background="@color/main"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.viewpager2.widget.ViewPager2
