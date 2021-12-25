@@ -5,6 +5,7 @@
 
     <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
         android:id="@+id/videoSlide"
+        android:background="@color/main2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

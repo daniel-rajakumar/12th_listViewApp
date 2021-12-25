@@ -5,6 +5,7 @@
     android:id="@+id/constraintLayout_comments"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/main2"
     android:descendantFocusability="blocksDescendants">
 
 
@@ -14,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="testing hello wrodl"
+        android:textColor="@color/main_font"
         app:layout_constraintEnd_toEndOf="@+id/imageView_comment"
         app:layout_constraintStart_toStartOf="@+id/imageView_comment"
         app:layout_constraintTop_toBottomOf="@+id/imageView_comment" />
@@ -35,6 +37,7 @@
         android:id="@+id/textView_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/main_font"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="testing hello wrodl"
