@@ -2,16 +2,27 @@ package com.example.orientationandlistviewapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -30,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listView, listView2;
     ArrayList<Product> list;
     Document document;
-    EditText editText;
+    SearchView editText;
     Button button;
     String name = "news";
     String url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
@@ -48,15 +59,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.savedInstanceState = savedInstanceState;
-
-
-        Toolbar toolBar = findViewById(R.id.toolBar);
-        setSupportActionBar(toolBar);
-
-
-
-
-
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -87,6 +89,32 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.button3);
         textView_rating = findViewById(R.id.textView3);
         textView_by = findViewById(R.id.textView6);
+
+
+
+        EditText searchEditText = editText.findViewById(androidx.appcompat.R.id.search_src_text);
+        ImageView searchIcon = editText.findViewById(androidx.appcompat.R.id.search_button);
+        ImageView searchIcon2 = editText.findViewById(androidx.appcompat.R.id.search_button);
+        ImageView closeIcon = editText.findViewById(androidx.appcompat.R.id.search_close_btn);
+        ImageView goIcon = editText.findViewById(androidx.appcompat.R.id.search_go_btn);
+
+        searchEditText.setTextColor(getResources().getColor(R.color.main_font));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.main_font));
+        searchEditText.setTextCursorDrawable(null);
+        searchEditText.setHintTextColor(getResources().getColor(R.color.main_font_tint));
+
+
+
+        searchIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_search_24));
+        closeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_round_close_24));
+        goIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_round_send_24));
+        searchIcon2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_search_24));
+
+        searchEditText.setImeOptions(EditorInfo.IME_ACTION_GO);
+
+
+
+
 
         if (isLandSpace) {
             textView_info = findViewById(R.id.textView2);
@@ -219,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
 
     void go() {
         button.setOnClickListener(v -> {
-            name = editText.getText().toString();
+            name = editText.getQuery().toString();
             url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
             try {
 

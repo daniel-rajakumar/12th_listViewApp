@@ -8,10 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="main3">#333333</color>
     <color name="main2">#171717</color>
     <color name="main">#121212</color>
 
     <color name="main_font">#ffffff</color>
+    <color name="main_font_tint">#555555</color>
 
 
+    <color name="trash">#e54848</color>
 </resources>
