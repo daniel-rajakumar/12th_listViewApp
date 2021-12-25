@@ -218,12 +218,11 @@ public class MainActivity extends AppCompatActivity {
             clickedItemID = position;
             selectedProduct = list.get(position);
             String author = selectedProduct.getAuthor();
+            TextView textView1 = findViewById(R.id.textView6);
+            TextView textView2 = findViewById(R.id.textView3);
 
 
             if (author.length() > 35) author = author.substring(0, 32) + "...";
-
-            TextView textView1 = findViewById(R.id.textView6);
-            TextView textView2 = findViewById(R.id.textView3);
 
             textView1.setText("By: " + author);
             textView2.setText(selectedProduct.getRating() + " :Rating");
@@ -244,6 +243,10 @@ public class MainActivity extends AppCompatActivity {
                 listView_comments.setAdapter(new CustomAdapter_customer(this, this, R.layout.adapter_layout_comments, product.getUserReviews()));
             }
         });
+    }
+
+    void selecteList(int position){
+
     }
 
     public View getViewByPosition(int position, ListView listView) {
