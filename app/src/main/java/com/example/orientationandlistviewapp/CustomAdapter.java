@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class CustomAdapter extends ArrayAdapter<Product> {
@@ -66,6 +67,10 @@ class CustomAdapter extends ArrayAdapter<Product> {
 
         button.setOnClickListener(view -> {
             list.remove(position);
+
+            MainActivity.updateSelectedAppInfo(mainActivity, (ArrayList<Product>) list);
+
+
             notifyDataSetChanged();
         });
 

@@ -6,12 +6,12 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     Bundle savedInstanceState;
     boolean isLandSpace;
     TextView textView_by, textView_rating, textView_info;
-    int clickedItemID;
     Product selectedProduct;
     RadioGroup radioGroup;
     ViewFlipper viewFlipper;
@@ -215,37 +214,39 @@ public class MainActivity extends AppCompatActivity {
         }
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            clickedItemID = position;
             selectedProduct = list.get(position);
-            String author = selectedProduct.getAuthor();
-            TextView textView1 = findViewById(R.id.textView6);
-            TextView textView2 = findViewById(R.id.textView3);
-
-
-            if (author.length() > 35) author = author.substring(0, 32) + "...";
-
-            textView1.setText("By: " + author);
-            textView2.setText(selectedProduct.getRating() + " :Rating");
-
             if (Product.getSelectedIndex() != -1){
                 getViewByPosition(Product.getSelectedIndex(), listView) .setBackground(getResources().getDrawable(R.drawable.custom_applist));
             }
             Product.setSelectedIndex(position);
             view.setBackground(getResources().getDrawable(R.drawable.custom_applist_selected));
-
-            if (isLandSpace) {
-                ListView listView_comments = findViewById(R.id.listview_comment);
-
-                textView_info.setMovementMethod(new ScrollingMovementMethod());
-                textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
-                viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderPreview(), viewPager2));
-                Product product = list.get(position);
-                listView_comments.setAdapter(new CustomAdapter_customer(this, this, R.layout.adapter_layout_comments, product.getUserReviews()));
-            }
+            updateSelectedAppInfo(this, list);
         });
     }
 
-    void selecteList(int position){
+    public static void updateSelectedAppInfo(MainActivity mainActivity, ArrayList<Product> list){
+        TextView textView1 = mainActivity.findViewById(R.id.textView6);
+        TextView textView2 = mainActivity.findViewById(R.id.textView3);
+        ViewPager2 viewPager2 = mainActivity.findViewById(R.id.viewPager);
+        TextView textView_info = mainActivity.findViewById(R.id.textView2);
+
+        Product selectedProduct = list.get(Product.getSelectedIndex());
+
+        String author = selectedProduct.getAuthor();
+        if (author.length() > 35) author = author.substring(0, 32) + "...";
+        textView1.setText("By: " + author);
+        textView2.setText(selectedProduct.getRating() + " :Rating");
+
+
+        if (mainActivity.isLandSpace) {
+            ListView listView_comments = mainActivity.findViewById(R.id.listview_comment);
+
+            textView_info.setMovementMethod(new ScrollingMovementMethod());
+            textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
+            viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderPreview(), viewPager2));
+            listView_comments.setAdapter(new CustomAdapter_customer(mainActivity, mainActivity, R.layout.adapter_layout_comments, selectedProduct.getUserReviews()));
+        }
+
 
     }
 
@@ -299,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("list", list);
-        outState.putInt("position", clickedItemID);
         outState.putParcelable("product", selectedProduct);
     }
 }
