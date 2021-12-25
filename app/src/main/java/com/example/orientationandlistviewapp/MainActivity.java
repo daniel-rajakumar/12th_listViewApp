@@ -193,11 +193,11 @@ public class MainActivity extends AppCompatActivity {
             RadioButton radioButton = radioGroup.findViewById(checkedId);
 
             for (int i = 0; i < radioGroup.getChildCount(); i++){
-                radioGroup.getChildAt(i).setBackgroundTintList(getResources().getColorStateList(R.color.main_font_tint));
+                radioGroup.getChildAt(i).setBackgroundTintList(this.getColorStateList(R.color.main_font_tint));
             }
 
             if (radioButton.isChecked()) {
-                radioButton.setBackgroundTintList(getResources().getColorStateList(R.color.main_font));
+                radioButton.setBackgroundTintList(this.getColorStateList(R.color.main_font));
             }
 
         });

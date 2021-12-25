@@ -40,7 +40,7 @@
                 android:backgroundTint="@color/main3"
                 android:text="Search"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.42"
+                app:layout_constraintHorizontal_bias="0.43"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -174,7 +174,8 @@
             <ListView
                 android:id="@+id/listview_comment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@color/main2" />
 
         </ViewFlipper>
 
