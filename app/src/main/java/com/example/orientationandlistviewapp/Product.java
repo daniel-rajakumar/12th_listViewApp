@@ -85,10 +85,21 @@ public class Product implements Parcelable  {
                             String[] pattern1 = pattern0[1].split("]]],[0-9]+,");
                             String[] pattern2 = pattern1[1].split(",\\[[0-9]+,[0-9]+\\],[0-9]+,null,null,");
 //
+
+                            String stars =  pattern0[1].charAt(pattern0[1].indexOf("]]],") + 4) + "";
                             String userName =  pattern0[0];
                             String link =  pattern1[0].replace("\"", "").split("\\\\u")[0];
                             String comment = pattern2[0].substring(pattern2[0].indexOf("\"") + 1, pattern2[0].length() - 1);
-                            userReviews.add(new UserReviews(userName, link, comment));
+
+                            try {
+                                Log.d("doc", stars);
+                            } catch (Exception e){
+                                Log.d("doc", "error");
+                            }
+
+
+
+                            userReviews.add(new UserReviews(userName, stars, link, comment));
 
 
 
@@ -254,11 +265,13 @@ public class Product implements Parcelable  {
 
     class UserReviews {
         String name;
+        String stars;
         String profileLink;
         String comment;
 
-        UserReviews(String name, String profileLink, String comment){
+        UserReviews(String name, String stars, String profileLink, String comment){
             this.name = name;
+            this.stars = stars;
             this.profileLink = profileLink;
             this.comment = comment;
         }
@@ -269,6 +282,10 @@ public class Product implements Parcelable  {
 
         public String getComment() {
             return comment;
+        }
+
+        public String getStars() {
+            return stars;
         }
 
         public String getProfileLink() {

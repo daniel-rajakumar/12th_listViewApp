@@ -3,6 +3,7 @@ package com.example.orientationandlistviewapp;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,8 +52,8 @@ class CustomAdapter_customer extends ArrayAdapter<Product.UserReviews> {
         ImageView imageView = adapterLayout.findViewById(R.id.imageView_comment);
         Product.UserReviews product = list.get(position);
 
-        textView.setText(product.getComment());
         textView2.setText(product.getName());
+        textView.setText(product.getComment());
 
         try {
             String imageUrl = product.getProfileLink();
