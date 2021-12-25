@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
         TextView textView_rating = mainActivity.findViewById(R.id.textView3);
         TextView textView_by = mainActivity.findViewById(R.id.textView6);
         ViewPager2 viewPager2 = mainActivity.findViewById(R.id.viewPager);
-        ListView listView_comment = mainActivity.findViewById(R.id.listview_comment);
+        ListView listView_comments = mainActivity.findViewById(R.id.listview_comment);
 
         if (Product.getSelectedIndex() == -1)  {
             textView_by.setText("By: ");
@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
             if (mainActivity.isLandSpace){
                 textView_info.setText("");
                 viewPager2.setAdapter(null);
-                listView_comment.setAdapter(null);
+                listView_comments.setAdapter(null);
             }
             return;
         }
@@ -254,16 +254,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (mainActivity.isLandSpace) {
-            ListView listView_comments = mainActivity.findViewById(R.id.listview_comment);
-
             textView_info.setMovementMethod(new ScrollingMovementMethod());
             textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
             viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderPreview(), viewPager2));
             listView_comments.setAdapter(new CustomAdapter_customer(mainActivity, mainActivity, R.layout.adapter_layout_comments, selectedProduct.getUserReviews()));
         }
-
-
     }
+
 
     public View getViewByPosition(int position, ListView listView) {
         int firstListItemPosition = listView.getFirstVisiblePosition();
