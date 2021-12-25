@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -50,10 +51,12 @@ class CustomAdapter_customer extends ArrayAdapter<Product.UserReviews> {
         TextView textView = adapterLayout.findViewById(R.id.textView_comment);
         TextView textView2 = adapterLayout.findViewById(R.id.textView_name);
         ImageView imageView = adapterLayout.findViewById(R.id.imageView_comment);
+        RatingBar ratingBar = adapterLayout.findViewById(R.id.ratingBar_comment);
         Product.UserReviews product = list.get(position);
 
         textView2.setText(product.getName());
         textView.setText(product.getComment());
+        ratingBar.setRating(Integer.parseInt(product.getStars()));
 
         try {
             String imageUrl = product.getProfileLink();

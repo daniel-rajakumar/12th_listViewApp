@@ -62,9 +62,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <RatingBar
-        android:id="@+id/ratingBar3"
+        android:id="@+id/ratingBar_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:numStars="5"
+        android:isIndicator="true"
+        android:secondaryProgressTint="@color/star"
+        android:progressTint="@color/star"
+        android:progressBackgroundTint="@color/main_font_tint"
         app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

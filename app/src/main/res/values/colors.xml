@@ -17,4 +17,6 @@
 
 
     <color name="trash">#e54848</color>
+    <color name="star">#FFD700</color>
+
 </resources>
