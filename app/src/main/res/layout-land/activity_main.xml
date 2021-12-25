@@ -8,6 +8,45 @@
     tools:context=".MainActivity">
 
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/main2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/editTextTextPersonName3"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="chess.com"
+                app:queryHint="Search for apps"
+                app:layout_constraintEnd_toStartOf="@+id/button3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:searchHintIcon="@drawable/ic_baseline_search_24_tint"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search"
+                android:backgroundTint="@color/main3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
