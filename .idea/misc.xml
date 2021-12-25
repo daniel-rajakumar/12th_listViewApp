@@ -6,6 +6,7 @@
         <entry key="..\:/Users/danie/AndroidStudioProjects/OrientationAndListViewApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/danie/AndroidStudioProjects/OrientationAndListViewApp/app/src/main/res/layout/adapter_layout.xml" value="0.19814814814814816" />
         <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2609375" />
+        <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/drawable/custom_applist.xml" value="0.22735042735042735" />
         <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/drawable/custom_radio_button.xml" value="0.30925925925925923" />
         <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.28703703703703703" />
         <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.3619791666666667" />
@@ -19,9 +20,9 @@
         <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/drawable/ic_round_send_24.xml" value="0.20555555555555555" />
         <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/drawable/remove_button.xml" value="0.25092592592592594" />
         <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/layout-land/activity_main.xml" value="0.24791666666666667" />
-        <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/layout/activity_main.xml" value="0.28376068376068375" />
         <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/layout/adapter_layout.xml" value="0.2805128205128205" />
-        <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/layout/adapter_layout_comments.xml" value="0.2609375" />
+        <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/layout/adapter_layout_comments.xml" value="0.3458333333333333" />
         <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/layout/radio_checked.xml" value="0.3458333333333333" />
         <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/layout/radio_unchecked.xml" value="0.3458333333333333" />
         <entry key="..\:/Users/danie/code/12th_listViewApp/app/src/main/res/layout/slide_image_container.xml" value="0.3458333333333333" />
