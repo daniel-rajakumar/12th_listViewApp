@@ -207,10 +207,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     void setListeners() throws IOException {
-        if (savedInstanceState != null && isLandSpace && (selectedProduct != null)){
-            textView_info.setMovementMethod(new ScrollingMovementMethod());
-            textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
-            viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderPreview(), viewPager2));
+//        if (savedInstanceState != null && isLandSpace && (selectedProduct != null)){
+//            textView_info.setMovementMethod(new ScrollingMovementMethod());
+//            textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
+//            viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderPreview(), viewPager2));
+//        }
+        if (savedInstanceState != null){
+            updateSelectedAppInfo(this, list);
         }
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
@@ -225,17 +228,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void updateSelectedAppInfo(MainActivity mainActivity, ArrayList<Product> list){
-        TextView textView1 = mainActivity.findViewById(R.id.textView6);
-        TextView textView2 = mainActivity.findViewById(R.id.textView3);
-        ViewPager2 viewPager2 = mainActivity.findViewById(R.id.viewPager);
         TextView textView_info = mainActivity.findViewById(R.id.textView2);
+        TextView textView_rating = mainActivity.findViewById(R.id.textView3);
+        TextView textView_by = mainActivity.findViewById(R.id.textView6);
+        ViewPager2 viewPager2 = mainActivity.findViewById(R.id.viewPager);
+        ListView listView_comment = mainActivity.findViewById(R.id.listview_comment);
+
+        if (Product.getSelectedIndex() == -1)  {
+            textView_by.setText("By: ");
+            textView_rating.setText(": Rating");
+            if (mainActivity.isLandSpace){
+                textView_info.setText("");
+                viewPager2.setAdapter(null);
+                listView_comment.setAdapter(null);
+            }
+            return;
+        }
 
         Product selectedProduct = list.get(Product.getSelectedIndex());
 
         String author = selectedProduct.getAuthor();
         if (author.length() > 35) author = author.substring(0, 32) + "...";
-        textView1.setText("By: " + author);
-        textView2.setText(selectedProduct.getRating() + " :Rating");
+        textView_by.setText("By: " + author);
+        textView_rating.setText(selectedProduct.getRating() + " :Rating");
 
 
         if (mainActivity.isLandSpace) {
@@ -262,30 +277,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-    void resetVariables(){
-        textView_by.setText("By: ");
-        textView_rating.setText(": Rating");
-        if (isLandSpace){
-            textView_info.setText("");
-            viewPager2.setAdapter(null);
-        }
-        selectedProduct = null;
-        Product.setSelectedIndex(-1);
-    }
-
-
-
     void go() {
         button.setOnClickListener(v -> {
             name = editText.getQuery().toString();
             url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
             try {
-
                 getWebsite();
                 updateList();
-                resetVariables();
+                Product.setSelectedIndex(-1);
+                updateSelectedAppInfo(this, list);
             } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             }
