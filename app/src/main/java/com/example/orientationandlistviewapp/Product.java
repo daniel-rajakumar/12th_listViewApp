@@ -82,14 +82,23 @@ public class Product implements Parcelable  {
                     for (String a: arr){
                         if (a.endsWith(",null,null,")){
                             String[] pattern0 = a.split("\",\\[null,[0-9]+,null,\\[null,null,");
-                            String[] pattern1 = pattern0[1].split("]]],[0-9]+,null,");
+                            String[] pattern1 = pattern0[1].split("]]],[0-9]+,");
                             String[] pattern2 = pattern1[1].split(",\\[[0-9]+,[0-9]+\\],[0-9]+,null,null,");
-
+//
                             String userName =  pattern0[0];
                             String link =  pattern1[0].replace("\"", "").split("\\\\u")[0];
-                            String comment = pattern2[0].replace("\"", "");
-
+                            String comment = pattern2[0].substring(pattern2[0].indexOf("\"") + 1, pattern2[0].length() - 1);
                             userReviews.add(new UserReviews(userName, link, comment));
+
+
+
+
+
+
+
+
+
+
 //                            String comment = arr2[5].substring(arr2[5].indexOf("\""), arr2[5].lastIndexOf("\""));
 //                            Log.d("doc", i + " -> " + Arrays.toString(arr2));
 //                            Log.d("doc",
@@ -100,6 +109,7 @@ public class Product implements Parcelable  {
 //
 //                            String[] patter2 = pattern[1].split("]]],[0-9]+,null,");
 //                            Log.d("doc", patter2[1].split(",\\[[0-9]+,[0-9]+\\],[0-9]+,null,null,")[0]);
+
 
                         }
                     }

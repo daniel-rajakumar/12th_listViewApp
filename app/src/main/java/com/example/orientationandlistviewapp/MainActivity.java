@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -181,13 +182,25 @@ public class MainActivity extends AppCompatActivity {
         viewFlipper = findViewById(R.id.viewSwitcher);
         viewPager2 =  findViewById(R.id.viewPager);
 
-        radioGroup.setOnCheckedChangeListener((group, checkedId) ->
+
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             viewFlipper.setDisplayedChild(
-                radioGroup.indexOfChild(
-                    findViewById(checkedId)
-                )
-            )
-        );
+                    radioGroup.indexOfChild(
+                            findViewById(checkedId)
+                    )
+            );
+
+            RadioButton radioButton = radioGroup.findViewById(checkedId);
+
+            for (int i = 0; i < radioGroup.getChildCount(); i++){
+                radioGroup.getChildAt(i).setBackgroundTintList(getResources().getColorStateList(R.color.main_font_tint));
+            }
+
+            if (radioButton.isChecked()) {
+                radioButton.setBackgroundTintList(getResources().getColorStateList(R.color.main_font));
+            }
+
+        });
     }
 
 

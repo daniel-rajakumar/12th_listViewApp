@@ -40,7 +40,7 @@
                 android:backgroundTint="@color/main3"
                 android:text="Search"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.43"
+                app:layout_constraintHorizontal_bias="0.42"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,6 +49,7 @@
                 android:id="@+id/radioGroup"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginStart="4dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -59,19 +60,28 @@
                     android:id="@+id/radio1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_baseline_info_24"
+                    android:layout_marginHorizontal="35dp"
+                    android:button="@null" />
 
                 <RadioButton
                     android:id="@+id/radio2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_baseline_preview_24"
+                    android:layout_marginHorizontal="35dp"
+                    android:button="@null" />
 
                 <RadioButton
                     android:id="@+id/radio3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_baseline_insert_comment_24"
+                    android:layout_marginHorizontal="35dp"
+                    android:button="@null" />
 
             </RadioGroup>
         </androidx.constraintlayout.widget.ConstraintLayout>
