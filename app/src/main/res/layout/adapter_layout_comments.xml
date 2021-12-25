@@ -5,44 +5,60 @@
     android:id="@+id/constraintLayout_comments"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/main2"
     android:descendantFocusability="blocksDescendants">
 
 
-    <TextView
-        android:id="@+id/textView_name"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="testing hello wrodl"
-        android:textColor="@color/main_font"
-        app:layout_constraintEnd_toEndOf="@+id/imageView_comment"
-        app:layout_constraintStart_toStartOf="@+id/imageView_comment"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_comment" />
+        android:layout_marginTop="50dp"
+        android:background="@drawable/custom_commentlist"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TextView
+            android:id="@+id/textView_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="testing hello wrodl"
+            android:textColor="@color/main_font"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textView_name"
+            app:layout_constraintStart_toStartOf="@+id/textView_name"
+            app:layout_constraintTop_toBottomOf="@+id/textView_name"
+            android:textAlignment="center"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textView_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:textSize="20sp"
+            android:text="testing hello wrodl"
+            android:textColor="@color/main_font"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/imageView_comment"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="8dp"
         android:contentDescription="TODO"
         android:scaleType="fitXY"
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.524"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/main_font"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="testing hello wrodl"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/imageView_comment"
-        app:layout_constraintStart_toStartOf="@+id/imageView_comment"
-        app:layout_constraintTop_toBottomOf="@+id/textView_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>
