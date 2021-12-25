@@ -3,30 +3,23 @@ package com.example.orientationandlistviewapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Switch;
+import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
+import android.widget.ViewFlipper;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -50,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
     TextView textView_by, textView_rating, textView_info;
     int clickedItemID;
     Product selectedProduct;
-    Switch toggleSwitch;
-    ViewSwitcher viewSwitcher;
+    RadioGroup radioGroup;
+    ViewFlipper viewFlipper;
     ViewPager2 viewPager2;
 
     @Override
@@ -182,19 +175,24 @@ public class MainActivity extends AppCompatActivity {
 
 
     void setToggleButton(){
-        toggleSwitch = findViewById(R.id.switch2);
-        viewSwitcher = findViewById(R.id.viewSwitcher);
+        radioGroup = findViewById(R.id.radioGroup);
+        viewFlipper = findViewById(R.id.viewSwitcher);
         viewPager2 =  findViewById(R.id.viewPager);
 
-
-        toggleSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked){
-                viewSwitcher.showNext();
-            } else {
-                viewSwitcher.showPrevious();
-            }
-        });
-
+        // PURE ART
+        radioGroup.setOnCheckedChangeListener((group, checkedId) ->
+            viewFlipper.setDisplayedChild(
+                viewFlipper.indexOfChild(
+                    viewFlipper.getChildAt(
+                        radioGroup.indexOfChild(
+                            findViewById(
+                                checkedId
+                            )
+                        )
+                    )
+                )
+            )
+        );
     }
 
 
