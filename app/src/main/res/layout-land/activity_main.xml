@@ -64,6 +64,7 @@
                     android:background="@drawable/ic_baseline_info_24"
                     android:layout_marginHorizontal="35dp"
                     android:tooltipText="Description"
+                    android:checked="true"
                     android:button="@null" />
 
                 <RadioButton
@@ -74,6 +75,7 @@
                     android:background="@drawable/ic_baseline_preview_24"
                     android:layout_marginHorizontal="35dp"
                     android:tooltipText="Previews"
+                    android:checked="false"
                     android:button="@null" />
 
                 <RadioButton
@@ -84,6 +86,7 @@
                     android:background="@drawable/ic_baseline_insert_comment_24"
                     android:layout_marginHorizontal="35dp"
                     android:tooltipText="Reviews"
+                    android:checked="false"
                     android:button="@null" />
 
             </RadioGroup>

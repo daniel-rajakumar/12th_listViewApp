@@ -6,7 +6,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -32,8 +31,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+//TODO: fix the bug that happens when you remove the last element while an item is selected.
+
 public class MainActivity extends AppCompatActivity {
-    ListView listView, listView2;
+    ListView listView;
     ArrayList<Product> list;
     Document document;
     SearchView editText;
@@ -42,11 +43,7 @@ public class MainActivity extends AppCompatActivity {
     String url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
     Bundle savedInstanceState;
     boolean isLandSpace;
-    TextView textView_by, textView_rating, textView_info;
-    Product selectedProduct;
     RadioGroup radioGroup;
-    ViewFlipper viewFlipper;
-    ViewPager2 viewPager2;
 
 
     @Override
@@ -78,55 +75,34 @@ public class MainActivity extends AppCompatActivity {
             list = new ArrayList<>();
         } else {
             list = (ArrayList<Product>) savedInstanceState.get("list");
-            selectedProduct = (Product) savedInstanceState.get("product");
         }
         editText = findViewById(R.id.editTextTextPersonName3);
         button = findViewById(R.id.button3);
-        textView_rating = findViewById(R.id.textView3);
-        textView_by = findViewById(R.id.textView6);
 
-
-
-        EditText searchEditText = editText.findViewById(androidx.appcompat.R.id.search_src_text);
-        ImageView searchIcon = editText.findViewById(androidx.appcompat.R.id.search_button);
-        ImageView searchIcon2 = editText.findViewById(androidx.appcompat.R.id.search_button);
-        ImageView closeIcon = editText.findViewById(androidx.appcompat.R.id.search_close_btn);
-        ImageView goIcon = editText.findViewById(androidx.appcompat.R.id.search_go_btn);
-
-        searchEditText.setTextColor(getResources().getColor(R.color.main_font));
-        searchEditText.setHintTextColor(getResources().getColor(R.color.main_font));
-        searchEditText.setTextCursorDrawable(null);
-        searchEditText.setHintTextColor(getResources().getColor(R.color.main_font_tint));
-
-
-
-        searchIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_search_24));
-        closeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_round_close_24));
-        goIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_round_send_24));
-        searchIcon2.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_search_24));
-
-        searchEditText.setImeOptions(EditorInfo.IME_ACTION_GO);
-
-
-
-
-
-        if (isLandSpace) {
-            textView_info = findViewById(R.id.textView2);
-        }
+        modifySearchBar();
 
         if (savedInstanceState == null){
             getWebsite();
 
         } else {
-            if (selectedProduct != null){
-                textView_by.setText(selectedProduct.getAuthor());
-                textView_rating.setText(selectedProduct.getRating());
-            }
-//            Log.d("selected", selectedProduct + "");
             listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
         }
 
+    }
+
+    void modifySearchBar(){
+        EditText searchEditText = editText.findViewById(androidx.appcompat.R.id.search_src_text);
+        ImageView searchIcon = editText.findViewById(androidx.appcompat.R.id.search_button);
+        ImageView closeIcon = editText.findViewById(androidx.appcompat.R.id.search_close_btn);
+
+        searchEditText.setTextColor(getResources().getColor(R.color.main_font));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.main_font));
+        searchEditText.setTextCursorDrawable(null);
+        searchEditText.setHintTextColor(getResources().getColor(R.color.main_font_tint));
+        searchEditText.setImeOptions(EditorInfo.IME_ACTION_GO);
+
+        searchIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_search_24));
+        closeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_round_close_24));
     }
 
 
@@ -167,39 +143,34 @@ public class MainActivity extends AppCompatActivity {
 
         list.sort(Comparator.comparingInt(Product::getId));
         listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
-
-//        Button button2 = findViewById(R.id.button);
-//        button2.setOnClickListener(v -> {
-//            resetVariables();
-//        });
-
     }
 
 
     void setToggleButton(){
-        radioGroup = findViewById(R.id.radioGroup);
-        viewFlipper = findViewById(R.id.viewSwitcher);
-        viewPager2 =  findViewById(R.id.viewPager);
+        RadioGroup radioGroup = findViewById(R.id.radioGroup);
 
-
+        updateRadioGroup(radioGroup);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            viewFlipper.setDisplayedChild(
-                    radioGroup.indexOfChild(
-                            findViewById(checkedId)
-                    )
-            );
-
-            RadioButton radioButton = radioGroup.findViewById(checkedId);
-
-            for (int i = 0; i < radioGroup.getChildCount(); i++){
-                radioGroup.getChildAt(i).setBackgroundTintList(this.getColorStateList(R.color.main_font_tint));
-            }
-
-            if (radioButton.isChecked()) {
-                radioButton.setBackgroundTintList(this.getColorStateList(R.color.main_font));
-            }
-
+            updateRadioGroup(radioGroup);
         });
+    }
+
+    void updateRadioGroup(RadioGroup radioGroup){
+        ViewFlipper viewFlipper = findViewById(R.id.viewSwitcher);
+
+        viewFlipper.setDisplayedChild(
+                radioGroup.indexOfChild(
+                        findViewById(
+                            radioGroup.getCheckedRadioButtonId()
+                        )
+                )
+        );
+
+        for (int i = 0; i < radioGroup.getChildCount(); i++){
+            radioGroup.getChildAt(i).setBackgroundTintList(this.getColorStateList(R.color.main_font_tint));
+        }
+
+        radioGroup.findViewById(radioGroup.getCheckedRadioButtonId()).setBackgroundTintList(this.getColorStateList(R.color.main_font));
     }
 
 
@@ -217,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            selectedProduct = list.get(position);
             if (Product.getSelectedIndex() != -1){
                 getViewByPosition(Product.getSelectedIndex(), listView) .setBackground(getResources().getDrawable(R.drawable.custom_applist));
             }
@@ -226,6 +196,9 @@ public class MainActivity extends AppCompatActivity {
             updateSelectedAppInfo(this, list);
         });
     }
+
+
+
 
     public static void updateSelectedAppInfo(MainActivity mainActivity, ArrayList<Product> list){
         TextView textView_info = mainActivity.findViewById(R.id.textView2);
@@ -260,6 +233,10 @@ public class MainActivity extends AppCompatActivity {
             listView_comments.setAdapter(new CustomAdapter_customer(mainActivity, mainActivity, R.layout.adapter_layout_comments, selectedProduct.getUserReviews()));
         }
     }
+
+
+
+
 
 
     public View getViewByPosition(int position, ListView listView) {
@@ -297,7 +274,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("list", list);
-        outState.putParcelable("product", selectedProduct);
     }
 }
 
