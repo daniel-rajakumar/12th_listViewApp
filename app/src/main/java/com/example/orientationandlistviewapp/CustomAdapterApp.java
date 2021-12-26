@@ -45,6 +45,7 @@ class CustomAdapterApp extends ArrayAdapter<Product> {
         ImageView imageView_icon = adapterLayout.findViewById(R.id.imageView_applist_icon);
         TextView textView_info = adapterLayout.findViewById(R.id.textView_info);
         LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
+
         Product product = list.get(position);
 
         if (textView_info != null){

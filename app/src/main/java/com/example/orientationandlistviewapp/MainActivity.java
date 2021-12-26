@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,11 +20,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -32,6 +33,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.concurrent.atomic.AtomicInteger;
 
 //TODO: fix the bug that happens when you remove the last element while an item is selected.
 
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     Bundle savedInstanceState;
     boolean isLandSpace, hasRotated;
     Animation animation_bounce_app_list;
+    float percentage = 0;
+    int numAppsToShow;
 
 
     @Override
@@ -118,7 +122,9 @@ public class MainActivity extends AppCompatActivity {
 
     void updateAppListView() throws IOException {
         list_product.clear();
+        percentage = 0;
         Elements elements = document.select("div.Vpfmgd");
+        numAppsToShow = elements.size();
         int count = 0;
         for (Element element: elements){
             int id = ++count;
@@ -128,19 +134,36 @@ public class MainActivity extends AppCompatActivity {
             new Thread(() -> {
                 try {
                     Document appPage = Jsoup.connect(url).get();
+                    percentage++;
                     Document appFullReviewPage = Jsoup.connect(url + "&showAllReviews=true").get();
+                    percentage++;
                     list_product.add(new Product(id, appPage, appFullReviewPage));
-                } catch (IOException e) {
+                } catch (HttpStatusException e) {
+                    numAppsToShow--;
+                } catch (Exception e){
                     e.printStackTrace();
                 }
             }).start();
 
         }
-        while (list_product.size() < elements.size());
-//        while (list.size() < 1);
 
-        list_product.sort(Comparator.comparingInt(Product::getId));
-        listView_app.setAdapter(new CustomAdapterApp(this, this, R.layout.adapter_layout, list_product));
+        new Thread(() -> {
+            Button button  = findViewById(R.id.button_search);
+            while (list_product.size() < numAppsToShow) {
+                runOnUiThread(() -> {
+                    if ((percentage/(elements.size() * 2) * 100) == 0){
+                        button.setText("Searching...");
+                    } else {
+                        button.setText((percentage/(elements.size() * 2) * 100) + "%");
+                    }
+                });
+            }
+            runOnUiThread(() -> {
+                list_product.sort(Comparator.comparingInt(Product::getId));
+                listView_app.setAdapter(new CustomAdapterApp(this, this, R.layout.adapter_layout, list_product));
+                button.setText("Search");
+            });
+        }).start();
     }
 
 
@@ -250,9 +273,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
     public View getViewByPosition(int position, ListView listView) {
         int firstListItemPosition = listView.getFirstVisiblePosition();
         int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
@@ -265,11 +285,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
+
     void go() {
         Button button = findViewById(R.id.button_search);
         button.setOnClickListener(v -> {
             String appName = searchView.getQuery().toString();
             try {
+                listView_app.setAdapter(null);
                 connectWithPlayStoreAppLists(appName);
                 updateAppListView();
                 Product.setSelectedIndex(-1);
