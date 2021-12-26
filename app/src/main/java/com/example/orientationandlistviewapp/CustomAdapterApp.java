@@ -7,10 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -60,17 +64,23 @@ class CustomAdapterApp extends ArrayAdapter<Product> {
         }
 
         button_remove.setOnClickListener(view -> {
-            list.remove(position);
+            View selectedView = mainActivity.getViewByPosition(position, mainActivity.listView_app);
+            selectedView.startAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.remove_list));
 
-             if (Product.getSelectedIndex() == position) {
-                Product.setSelectedIndex(-1);
+            selectedView.postDelayed(() -> {
+                list.remove(position);
+                notifyDataSetChanged();
 
-            } else if (Product.getSelectedIndex() > position) {
-                Product.setSelectedIndex(Product.getSelectedIndex() - 1);
-            }
-//            Log.d("item", "" + Product.getSelectedIndex() + " > " + position);
-            MainActivity.updateSelectedAppInfo(mainActivity, (ArrayList<Product>) list);
-            notifyDataSetChanged();
+                if (Product.getSelectedIndex() == position) {
+                    Product.setSelectedIndex(-1);
+
+                } else if (Product.getSelectedIndex() > position) {
+                    Product.setSelectedIndex(Product.getSelectedIndex() - 1);
+
+                }
+                MainActivity.updateSelectedAppInfo(mainActivity, (ArrayList<Product>) list);
+
+            }, selectedView.getAnimation().getDuration());
         });
 
         return adapterLayout;

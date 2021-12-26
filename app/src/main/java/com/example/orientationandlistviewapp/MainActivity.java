@@ -37,7 +37,7 @@ import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends AppCompatActivity {
-    private ListView listView_app;
+    protected ListView listView_app;
     private ArrayList<Product> list_product;
     private Document document;
     private SearchView searchView;
@@ -158,9 +158,11 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
             runOnUiThread(() -> {
-                list_product.sort(Comparator.comparingInt(Product::getId));
-                listView_app.setAdapter(new CustomAdapterApp(this, this, R.layout.adapter_layout, list_product));
-                button.setText("Search");
+                try {
+                    list_product.sort(Comparator.comparingInt(Product::getId));
+                    listView_app.setAdapter(new CustomAdapterApp(this, this, R.layout.adapter_layout, list_product));
+                    button.setText("Search");
+                } catch (NullPointerException e){ }
             });
         }).start();
     }
@@ -215,10 +217,15 @@ public class MainActivity extends AppCompatActivity {
             }
             if (position == Product.getSelectedIndex()) {
                 Product.setSelectedIndex(-1);
+
                 view.clearAnimation();
             } else {
                 Product.setSelectedIndex(position);
                 view.setBackgroundResource(R.drawable.custom_applist_selected);
+            }
+            if (view.getAnimation() != null){
+                Log.d("anim", " -> animating -> " + view.getAnimation().hasEnded());
+
             }
 
             updateSelectedAppInfo(this, list_product);
@@ -263,7 +270,9 @@ public class MainActivity extends AppCompatActivity {
             listView_comments.setAdapter(new CustomAdapterReviews(mainActivity, mainActivity, R.layout.adapter_layout_comments, selectedProduct.getUserReviews()));
         }
 
-        selectedView.setAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.bounce_app_list));
+        if (selectedView.getAnimation() == null){
+            selectedView.startAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.bounce_app_list));
+        }
     }
 
 
