@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -182,12 +183,11 @@ public class MainActivity extends AppCompatActivity {
 
         animation_bounce_app_list = AnimationUtils.loadAnimation(this, R.anim.bounce_app_list);
 
-//        RadioButton button = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
-//        for (int i = 0; i < radioGroup.getChildCount(); i++){
-//            button.clearAnimation();
-//        }
-//        button.startAnimation(animation_bounce_app_list);
-
+        RadioButton button = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
+        for (int i = 0; i < radioGroup.getChildCount(); i++){
+            button.clearAnimation();
+        }
+        button.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bounce_radio_button));
 
         viewFlipper.setDisplayedChild(
                 radioGroup.indexOfChild(
