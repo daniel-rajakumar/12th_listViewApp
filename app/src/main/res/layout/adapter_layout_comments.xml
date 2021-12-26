@@ -12,7 +12,7 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/custom_commentlist"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,7 +25,7 @@
             android:id="@+id/textView_review_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="32dp"
             android:text="Comment"
             android:textAlignment="center"
@@ -40,10 +40,11 @@
             android:id="@+id/textView_review_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="45dp"
             android:text="Name"
             android:textColor="@color/main_font"
             android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,11 +54,12 @@
     <androidx.cardview.widget.CardView
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginTop="16dp"
         android:elevation="12dp"
         app:cardCornerRadius="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageView_review_pfp"
@@ -65,8 +67,7 @@
             android:layout_height="100dp"
             android:contentDescription="TODO"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_launcher_background"
-            />
+            android:src="@drawable/ic_launcher_background" />
 
 
     </androidx.cardview.widget.CardView>
@@ -75,11 +76,11 @@
         android:id="@+id/ratingBar_review_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numStars="5"
         android:isIndicator="true"
-        android:secondaryProgressTint="@color/star"
-        android:progressTint="@color/star"
+        android:numStars="5"
         android:progressBackgroundTint="@color/main_font_tint"
+        android:progressTint="@color/star"
+        android:secondaryProgressTint="@color/star"
         app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

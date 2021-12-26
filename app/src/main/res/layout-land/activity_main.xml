@@ -185,7 +185,7 @@
                 android:id="@+id/listview_comment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:dividerHeight="50dp"
+                android:dividerHeight="20dp"
                 android:paddingStart="5dp"
                 android:background="@color/main2" />
 

@@ -32,7 +32,7 @@ public class SliderViewHolder extends RecyclerView.ViewHolder {
             String imageUrl = sliderPreview.getUrl();
             InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
             imageView.setImageDrawable(Drawable.createFromStream(inputStream, null));
-
+            
         } else {
             videoView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
                 @Override
