@@ -3,6 +3,7 @@ package com.example.orientationandlistviewapp;
 import android.app.Activity;
 import android.content.Context;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +19,13 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-class CustomAdapter extends ArrayAdapter<Product> {
+class CustomAdapterApp extends ArrayAdapter<Product> {
     private final MainActivity mainActivity;
     List<Product> list;
     Context context;
     int xmlResource;
 
-    public CustomAdapter(MainActivity mainActivity, @NonNull Context context, int resource, @NonNull List<Product> objects) {
+    public CustomAdapterApp(MainActivity mainActivity, @NonNull Context context, int resource, @NonNull List<Product> objects) {
         super(context, resource, objects);
         this.mainActivity = mainActivity;
         this.context = context;
@@ -59,6 +60,14 @@ class CustomAdapter extends ArrayAdapter<Product> {
 
         button_remove.setOnClickListener(view -> {
             list.remove(position);
+
+             if (Product.getSelectedIndex() == position) {
+                Product.setSelectedIndex(-1);
+
+            } else if (Product.getSelectedIndex() > position) {
+                Product.setSelectedIndex(Product.getSelectedIndex() - 1);
+            }
+//            Log.d("item", "" + Product.getSelectedIndex() + " > " + position);
             MainActivity.updateSelectedAppInfo(mainActivity, (ArrayList<Product>) list);
             notifyDataSetChanged();
         });

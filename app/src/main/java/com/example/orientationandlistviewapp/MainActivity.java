@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -33,8 +34,8 @@ import java.util.Comparator;
 //TODO: fix the bug that happens when you remove the last element while an item is selected.
 
 public class MainActivity extends AppCompatActivity {
-    ListView listView;
-    ArrayList<Product> list;
+    ListView listView_app;
+    ArrayList<Product> list_product;
     Document document;
     SearchView searchView;
     Bundle savedInstanceState;
@@ -69,17 +70,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     void ready() throws IOException, InterruptedException {
-        listView = findViewById(R.id.listView_app);
+        listView_app = findViewById(R.id.listView_app);
         if (hasRotated){
-            list = (ArrayList<Product>) savedInstanceState.get("list");
+            list_product = (ArrayList<Product>) savedInstanceState.get("list");
         } else {
-            list = new ArrayList<>();
+            list_product = new ArrayList<>();
         }
 
         modifySearchBar();
 
         if (hasRotated) {
-            listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
+            listView_app.setAdapter(new CustomAdapterApp(this, this, R.layout.adapter_layout, list_product));
         }
     }
 
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void updateAppListView() throws IOException {
-        list.clear();
+        list_product.clear();
         Elements elements = document.select("div.Vpfmgd");
         int count = 0;
         for (Element element: elements){
@@ -125,18 +126,18 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Document appPage = Jsoup.connect(url).get();
                     Document appFullReviewPage = Jsoup.connect(url + "&showAllReviews=true").get();
-                    list.add(new Product(id, appPage, appFullReviewPage));
+                    list_product.add(new Product(id, appPage, appFullReviewPage));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }).start();
 
         }
-        while (list.size() < elements.size());
+        while (list_product.size() < elements.size());
 //        while (list.size() < 1);
 
-        list.sort(Comparator.comparingInt(Product::getId));
-        listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
+        list_product.sort(Comparator.comparingInt(Product::getId));
+        listView_app.setAdapter(new CustomAdapterApp(this, this, R.layout.adapter_layout, list_product));
     }
 
 
@@ -173,16 +174,21 @@ public class MainActivity extends AppCompatActivity {
 
     void setListeners() throws IOException {
         if (hasRotated){
-            updateSelectedAppInfo(this, list);
+            updateSelectedAppInfo(this, list_product);
         }
 
-        listView.setOnItemClickListener((parent, view, position, id) -> {
+        listView_app.setOnItemClickListener((parent, view, position, id) -> {
             if (Product.getSelectedIndex() != -1){
-                getViewByPosition(Product.getSelectedIndex(), listView).setBackgroundResource(R.drawable.custom_applist);
+                getViewByPosition(Product.getSelectedIndex(), listView_app).setBackgroundResource(R.drawable.custom_applist);
             }
-            Product.setSelectedIndex(position);
-            view.setBackgroundResource(R.drawable.custom_applist_selected);
-            updateSelectedAppInfo(this, list);
+            if (position == Product.getSelectedIndex()) {
+                Product.setSelectedIndex(-1);
+            } else {
+                Product.setSelectedIndex(position);
+                view.setBackgroundResource(R.drawable.custom_applist_selected);
+            }
+
+            updateSelectedAppInfo(this, list_product);
         });
     }
 
@@ -206,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return;
         }
+        if (list.isEmpty()) return;
 
         Product selectedProduct = list.get(Product.getSelectedIndex());
         String author = selectedProduct.getAuthor();
@@ -219,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
             textView_info.setMovementMethod(new ScrollingMovementMethod());
             textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
             viewPager.setAdapter(new SliderAdapter(selectedProduct.getSliderPreview()));
-            listView_comments.setAdapter(new CustomAdapter_customer(mainActivity, mainActivity, R.layout.adapter_layout_comments, selectedProduct.getUserReviews()));
+            listView_comments.setAdapter(new CustomAdapterReviews(mainActivity, mainActivity, R.layout.adapter_layout_comments, selectedProduct.getUserReviews()));
         }
     }
 
@@ -248,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
                 connectWithPlayStoreAppLists(appName);
                 updateAppListView();
                 Product.setSelectedIndex(-1);
-                updateSelectedAppInfo(this, list);
+                updateSelectedAppInfo(this, list_product);
             } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             }
@@ -262,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("list", list);
+        outState.putParcelableArrayList("list", list_product);
     }
 }
 

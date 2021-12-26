@@ -19,13 +19,13 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
-class CustomAdapter_customer extends ArrayAdapter<Product.UserReviews> {
+class CustomAdapterReviews extends ArrayAdapter<Product.UserReviews> {
     private final MainActivity mainActivity;
     List<Product.UserReviews> list;
     Context context;
     int xmlResource;
 
-    public CustomAdapter_customer(MainActivity mainActivity, @NonNull Context context, int resource, @NonNull List<Product.UserReviews> objects) {
+    public CustomAdapterReviews(MainActivity mainActivity, @NonNull Context context, int resource, @NonNull List<Product.UserReviews> objects) {
         super(context, resource, objects);
         this.mainActivity = mainActivity;
         this.context = context;
