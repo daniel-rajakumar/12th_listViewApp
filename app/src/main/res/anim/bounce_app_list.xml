@@ -5,11 +5,11 @@
     android:interpolator="@android:anim/bounce_interpolator">
 
     <scale
-        android:pivotX="50%"
+        android:pivotX="0%"
         android:pivotY="50%"
-        android:fromXScale="0.5"
+        android:fromXScale="0.98"
+        android:fromYScale="0.98"
         android:toXScale="1.0"
-        android:fromYScale="0.5"
         android:toYScale="1.0"
         android:duration="500"/>
 </set>

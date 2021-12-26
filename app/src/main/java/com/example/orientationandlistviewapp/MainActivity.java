@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -43,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     SearchView searchView;
     Bundle savedInstanceState;
     boolean isLandSpace, hasRotated;
+    Animation animation_bounce_app_list;
 
 
     @Override
@@ -157,12 +157,13 @@ public class MainActivity extends AppCompatActivity {
         ViewFlipper viewFlipper = findViewById(R.id.viewSwitcher);
 
 
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.bounce);
-        RadioButton button = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
-        for (int i = 0; i < radioGroup.getChildCount(); i++){
-            button.clearAnimation();
-        }
-        button.startAnimation(animation);
+        animation_bounce_app_list = AnimationUtils.loadAnimation(this, R.anim.bounce_app_list);
+
+//        RadioButton button = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
+//        for (int i = 0; i < radioGroup.getChildCount(); i++){
+//            button.clearAnimation();
+//        }
+//        button.startAnimation(animation_bounce_app_list);
 
 
         viewFlipper.setDisplayedChild(
@@ -196,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
             }
             if (position == Product.getSelectedIndex()) {
                 Product.setSelectedIndex(-1);
+                view.clearAnimation();
             } else {
                 Product.setSelectedIndex(position);
                 view.setBackgroundResource(R.drawable.custom_applist_selected);
@@ -227,13 +229,14 @@ public class MainActivity extends AppCompatActivity {
         }
         if (list.isEmpty()) return;
 
+
         Product selectedProduct = list.get(Product.getSelectedIndex());
+        View selectedView = mainActivity.getViewByPosition(Product.getSelectedIndex(), mainActivity.listView_app);
         String author = selectedProduct.getAuthor();
 
         if (author.length() > 35) author = author.substring(0, 32) + "...";
         textView_by.setText("By: " + author);
         textView_rating.setText(selectedProduct.getRating() + " :Rating");
-
 
         if (mainActivity.isLandSpace) {
             textView_info.setMovementMethod(new ScrollingMovementMethod());
@@ -241,6 +244,8 @@ public class MainActivity extends AppCompatActivity {
             viewPager.setAdapter(new SliderAdapter(selectedProduct.getSliderPreview()));
             listView_comments.setAdapter(new CustomAdapterReviews(mainActivity, mainActivity, R.layout.adapter_layout_comments, selectedProduct.getUserReviews()));
         }
+
+        selectedView.setAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.bounce_app_list));
     }
 
 
