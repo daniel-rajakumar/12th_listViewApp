@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class Product implements Parcelable  {
+public class Product implements Parcelable {
     private int id;
     private String name;
     private String author;
@@ -27,44 +27,44 @@ public class Product implements Parcelable  {
 
 
 
-    Product(MainActivity mainActivity, int id, Document appPage, Document appFullReviewPage) throws IOException {
+    Product(int id, Document appPage, Document appFullReviewPage) throws IOException {
 
         try {
             // id
             this.id = id;
 
             // doc
-            Elements elements1 = appPage.select("main.LXrl4c");
+            Elements elements = appPage.select("main.LXrl4c");
 
             // info
-            this.info = elements1.select("div.DWPxHb span div").toString();
+            this.info = elements.select("div.DWPxHb span div").toString();
 
             // name
-            this.name = elements1.select("h1.AHFaub").text();
+            this.name = elements.select("h1.AHFaub").text();
 
             // author
-            this.author = elements1.select("a.hrTbp.R8zArc").get(0).text();
+            this.author = elements.select("a.hrTbp.R8zArc").get(0).text();
 
             // rating
-            this.rating = elements1.select(".pf5lIe div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "").trim();
+            this.rating = elements.select(".pf5lIe div").attr("aria-label").replaceAll("[a-z]|[A-Z]", "").trim();
             this.rating = (this.rating.equals("")) ? "N/A": this.rating;
 
             //image
-            String imageUrl = elements1.select(".xSyT2c img").attr("src");
+            String imageUrl = elements.select(".xSyT2c img").attr("src");
             InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
             this.image = Drawable.createFromStream(inputStream, null);
 
             // userReview
             userReviews = new ArrayList<>();
-            Elements elements2 = appFullReviewPage.body().getElementsByTag("script");
+            Elements elements_review = appFullReviewPage.body().getElementsByTag("script");
 
-            for (int i = 0; i < elements2.size(); i++){
-                String str = elements2.get(i).toString();
-                if (str.contains("https://play-lh.googleusercontent.com/a-/")){
-                    String[] arr = str.split("\\[\"");
-                    for (String a: arr){
-                        if (a.endsWith(",null,null,")){
-                            String[] pattern0 = a.split("\",\\[null,[0-9]+,null,\\[null,null,");
+            for (int i = 0; i < elements_review.size(); i++){
+                String line = elements_review.get(i).toString();
+                if (line.contains("https://play-lh.googleusercontent.com/a-/")){
+                    String[] array = line.split("\\[\"");
+                    for (String str: array){
+                        if (str.endsWith(",null,null,")){
+                            String[] pattern0 = str.split("\",\\[null,[0-9]+,null,\\[null,null,");
                             String[] pattern1 = pattern0[1].split("]]],[0-9]+,");
                             String[] pattern2 = pattern1[1].split(",\\[[0-9]+,[0-9]+\\],[0-9]+,null,null,");
 //
@@ -120,17 +120,6 @@ public class Product implements Parcelable  {
         }
     }
 
-    public static final Creator<Product> CREATOR = new Creator<Product>() {
-        @Override
-        public Product createFromParcel(Parcel in) {
-            return new Product(in);
-        }
-
-        @Override
-        public Product[] newArray(int size) {
-            return new Product[size];
-        }
-    };
 
     public String getName() {
         return name;
@@ -164,7 +153,6 @@ public class Product implements Parcelable  {
         return userReviews;
     }
 
-
     public static int getSelectedIndex() {
         return selectedIndex;
     }
@@ -172,29 +160,6 @@ public class Product implements Parcelable  {
     public static void setSelectedIndex(int selectedIndex) {
         Product.selectedIndex = selectedIndex;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    protected Product(Parcel in) {
-        id = in.readInt();
-        name = in.readString();
-        author = in.readString();
-        rating = in.readString();
-        info = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(name);
-        dest.writeString(author);
-        dest.writeString(rating);
-        dest.writeString(info);
-    }
-
 
 
     class UserReviews {
@@ -226,4 +191,47 @@ public class Product implements Parcelable  {
             return profileLink;
         }
     }
+
+
+
+
+
+
+    /*
+     * Parcelable related methods
+     */
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(author);
+        dest.writeString(rating);
+        dest.writeString(info);
+    }
+
+    protected Product(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        author = in.readString();
+        rating = in.readString();
+        info = in.readString();
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 }

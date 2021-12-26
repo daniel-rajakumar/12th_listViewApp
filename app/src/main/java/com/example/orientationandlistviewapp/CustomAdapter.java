@@ -67,10 +67,7 @@ class CustomAdapter extends ArrayAdapter<Product> {
 
         button.setOnClickListener(view -> {
             list.remove(position);
-
             MainActivity.updateSelectedAppInfo(mainActivity, (ArrayList<Product>) list);
-
-
             notifyDataSetChanged();
         });
 

@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Document appPage = Jsoup.connect(url).get();
                     Document appFullReviewPage = Jsoup.connect(url + "&showAllReviews=true").get();
-                    list.add(new Product(this, id, appPage, appFullReviewPage));
+                    list.add(new Product(id, appPage, appFullReviewPage));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
