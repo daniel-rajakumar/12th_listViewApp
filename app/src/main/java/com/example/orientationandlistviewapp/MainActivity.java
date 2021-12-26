@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     void ready() throws IOException, InterruptedException {
-        listView = findViewById(R.id.listView);
+        listView = findViewById(R.id.listView_app);
         if (hasRotated){
             list = (ArrayList<Product>) savedInstanceState.get("list");
         } else {
@@ -84,17 +84,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void modifySearchBar(){
-        searchView = findViewById(R.id.editTextTextPersonName3);
+        searchView = findViewById(R.id.searchView);
         EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         ImageView searchIcon = searchView.findViewById(androidx.appcompat.R.id.search_button);
         ImageView closeIcon = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
 
-        searchEditText.setTextColor(getResources().getColor(R.color.main_font));
-        searchEditText.setHintTextColor(getResources().getColor(R.color.main_font));
+        searchEditText.setTextColor(ContextCompat.getColor(this, R.color.main_font));
+        searchEditText.setHintTextColor(ContextCompat.getColor(this, R.color.main_font));
         searchEditText.setTextCursorDrawable(null);
-        searchEditText.setHintTextColor(getResources().getColor(R.color.main_font_tint));
+        searchEditText.setHintTextColor(ContextCompat.getColor(this, R.color.main_font_tint));
         searchEditText.setImeOptions(EditorInfo.IME_ACTION_GO);
-
         searchIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_search_24));
         closeIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_round_close_24));
     }
@@ -191,10 +190,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static void updateSelectedAppInfo(MainActivity mainActivity, ArrayList<Product> list){
-        TextView textView_info = mainActivity.findViewById(R.id.textView2);
-        TextView textView_rating = mainActivity.findViewById(R.id.textView3);
-        TextView textView_by = mainActivity.findViewById(R.id.textView6);
-        ViewPager2 viewPager2 = mainActivity.findViewById(R.id.viewPager);
+        TextView textView_info = mainActivity.findViewById(R.id.textView_info);
+        TextView textView_rating = mainActivity.findViewById(R.id.textView_rating);
+        TextView textView_by = mainActivity.findViewById(R.id.textView_by);
+        ViewPager2 viewPager = mainActivity.findViewById(R.id.viewPager);
         ListView listView_comments = mainActivity.findViewById(R.id.listview_comment);
 
         if (Product.getSelectedIndex() == -1)  {
@@ -202,15 +201,15 @@ public class MainActivity extends AppCompatActivity {
             textView_rating.setText(": Rating");
             if (mainActivity.isLandSpace){
                 textView_info.setText("");
-                viewPager2.setAdapter(null);
+                viewPager.setAdapter(null);
                 listView_comments.setAdapter(null);
             }
             return;
         }
 
         Product selectedProduct = list.get(Product.getSelectedIndex());
-
         String author = selectedProduct.getAuthor();
+
         if (author.length() > 35) author = author.substring(0, 32) + "...";
         textView_by.setText("By: " + author);
         textView_rating.setText(selectedProduct.getRating() + " :Rating");
@@ -219,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
         if (mainActivity.isLandSpace) {
             textView_info.setMovementMethod(new ScrollingMovementMethod());
             textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
-            viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderPreview(), viewPager2));
+            viewPager.setAdapter(new SliderAdapter(selectedProduct.getSliderPreview()));
             listView_comments.setAdapter(new CustomAdapter_customer(mainActivity, mainActivity, R.layout.adapter_layout_comments, selectedProduct.getUserReviews()));
         }
     }
@@ -242,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void go() {
-        Button button = findViewById(R.id.button3);
+        Button button = findViewById(R.id.button_search);
         button.setOnClickListener(v -> {
             String appName = searchView.getQuery().toString();
             try {

@@ -39,26 +39,25 @@ class CustomAdapter extends ArrayAdapter<Product> {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View adapterLayout = layoutInflater.inflate(xmlResource, null);
 
-        Button button = adapterLayout.findViewById(R.id.button);
-        TextView textView = adapterLayout.findViewById(R.id.textView);
-        ImageView imageView = adapterLayout.findViewById(R.id.imageView);
-        TextView _textView = null;
+        Button button_remove = adapterLayout.findViewById(R.id.button_applist_remove);
+        TextView textView_name = adapterLayout.findViewById(R.id.textView_applist_name);
+        ImageView imageView_icon = adapterLayout.findViewById(R.id.imageView_applist_icon);
+        TextView textView_info = adapterLayout.findViewById(R.id.textView_info);
         LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
+        Product product = list.get(position);
 
-        if (mainActivity.isLandSpace) {
-            _textView = mainActivity.findViewById(R.id.textView2);
-            _textView.setMovementMethod(new ScrollingMovementMethod());
+        if (textView_info != null){
+            textView_info.setMovementMethod(new ScrollingMovementMethod());
         }
 
-        Product product = list.get(position);
-        textView.setText(product.getName());
-        imageView.setImageDrawable(product.getImage());
+        textView_name.setText(product.getName());
+        imageView_icon.setImageDrawable(product.getImage());
 
         if (Product.getSelectedIndex() == position){
-                linearLayout.setBackgroundResource(R.drawable.custom_applist_selected);
+            linearLayout.setBackgroundResource(R.drawable.custom_applist_selected);
         }
 
-        button.setOnClickListener(view -> {
+        button_remove.setOnClickListener(view -> {
             list.remove(position);
             MainActivity.updateSelectedAppInfo(mainActivity, (ArrayList<Product>) list);
             notifyDataSetChanged();

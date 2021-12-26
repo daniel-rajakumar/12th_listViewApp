@@ -18,14 +18,13 @@ import java.io.InputStream;
 import java.net.URL;
 
 public class SliderViewHolder extends RecyclerView.ViewHolder {
-    private ImageView imageView;
-    private YouTubePlayerView videoView;
+    private final ImageView imageView;
+    private final YouTubePlayerView videoView;
 
     SliderViewHolder(@NonNull View itemView) {
         super(itemView);
         imageView = itemView.findViewById(R.id.imageSlide);
         videoView = itemView.findViewById(R.id.videoSlide);
-//        Log.d("videoView", videoView + "");
     }
 
     void setPreview(SliderPreview sliderPreview) throws IOException {
@@ -33,11 +32,8 @@ public class SliderViewHolder extends RecyclerView.ViewHolder {
             String imageUrl = sliderPreview.getUrl();
             InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
             imageView.setImageDrawable(Drawable.createFromStream(inputStream, null));
-        } else {
-//            String imageUrl = sliderImage.getUrl();
-//            InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
-//            Log.d("videoView", sliderPreview.getUrl().substring(30, 41) + "");
 
+        } else {
             videoView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
                 @Override
                 public void onReady(@NonNull YouTubePlayer youTubePlayer) {
@@ -45,9 +41,6 @@ public class SliderViewHolder extends RecyclerView.ViewHolder {
                     youTubePlayer.cueVideo(videoId, 0);
                 }
             });
-
-
-
         }
     }
 }

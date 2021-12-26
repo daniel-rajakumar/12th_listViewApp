@@ -13,12 +13,10 @@ import java.util.ArrayList;
 
 public class SliderAdapter extends RecyclerView.Adapter<SliderViewHolder> {
 
-    private ArrayList<SliderPreview> sliderPreview;
-    private ViewPager2 viewPager2;
+    private final ArrayList<SliderPreview> sliderPreview;
 
-    SliderAdapter(ArrayList<SliderPreview> sliderPreview, ViewPager2 viewPager2) {
+    SliderAdapter(ArrayList<SliderPreview> sliderPreview) {
         this.sliderPreview = sliderPreview;
-        this.viewPager2 = viewPager2;
     }
 
 
@@ -26,10 +24,6 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderViewHolder> {
     public int getItemViewType(int position) {
         if (sliderPreview.get(position).isImage()) return 1;
         return 2;
-//        Log.d("item", sliderPreview.get(position).isImage() + "");
-//        if (position == 0) return 2;
-//        else return 1;
-
     }
 
     @NonNull
@@ -40,7 +34,9 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderViewHolder> {
         if (viewType == 2) typeId = R.layout.slide_video_container;
 
         return new SliderViewHolder(
-            LayoutInflater.from(parent.getContext()).inflate(
+            LayoutInflater.from(
+                parent.getContext()
+            ).inflate(
                 typeId,
                 parent,
                 false

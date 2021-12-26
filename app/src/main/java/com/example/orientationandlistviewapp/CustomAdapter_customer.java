@@ -3,16 +3,11 @@ package com.example.orientationandlistviewapp;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.text.Html;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -36,9 +31,6 @@ class CustomAdapter_customer extends ArrayAdapter<Product.UserReviews> {
         this.context = context;
         this.xmlResource = resource;
         this.list = objects;
-
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View adapterLayout = layoutInflater.inflate(xmlResource, null);
     }
 
 
@@ -48,24 +40,23 @@ class CustomAdapter_customer extends ArrayAdapter<Product.UserReviews> {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View adapterLayout = layoutInflater.inflate(xmlResource, null);
 
-        TextView textView = adapterLayout.findViewById(R.id.textView_comment);
-        TextView textView2 = adapterLayout.findViewById(R.id.textView_name);
-        ImageView imageView = adapterLayout.findViewById(R.id.imageView_comment);
-        RatingBar ratingBar = adapterLayout.findViewById(R.id.ratingBar_comment);
+        TextView textView_comment = adapterLayout.findViewById(R.id.textView_review_comment);
+        TextView textView_name = adapterLayout.findViewById(R.id.textView_review_name);
+        ImageView imageView_pfp = adapterLayout.findViewById(R.id.imageView_review_pfp);
+        RatingBar ratingBar_rating = adapterLayout.findViewById(R.id.ratingBar_review_rating);
         Product.UserReviews product = list.get(position);
 
-        textView2.setText(product.getName());
-        textView.setText(product.getComment());
-        ratingBar.setRating(product.getStars());
+        textView_name.setText(product.getName());
+        textView_comment.setText(product.getComment());
+        ratingBar_rating.setRating(product.getStars());
 
         try {
             String imageUrl = product.getProfileLink();
             InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
-            imageView.setImageDrawable(Drawable.createFromStream(inputStream, null));
+            imageView_pfp.setImageDrawable(Drawable.createFromStream(inputStream, null));
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         return adapterLayout;
     }

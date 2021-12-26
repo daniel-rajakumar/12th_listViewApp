@@ -2,8 +2,8 @@ package com.example.orientationandlistviewapp;
 
 public class SliderPreview {
 
-    private String url;
-    private boolean isImage;
+    private final String url;
+    private final boolean isImage;
 
     SliderPreview(String url, boolean isImage){
         this.url = url;

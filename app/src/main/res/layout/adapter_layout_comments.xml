@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView_comment"
+            android:id="@+id/textView_review_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -31,13 +31,13 @@
             android:textAlignment="center"
             android:textColor="@color/main_font"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textView_name"
-            app:layout_constraintStart_toStartOf="@+id/textView_name"
-            app:layout_constraintTop_toBottomOf="@+id/textView_name"
+            app:layout_constraintEnd_toEndOf="@+id/textView_review_name"
+            app:layout_constraintStart_toStartOf="@+id/textView_review_name"
+            app:layout_constraintTop_toBottomOf="@+id/textView_review_name"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/textView_name"
+            android:id="@+id/textView_review_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
@@ -60,7 +60,7 @@
         app:layout_constraintTop_toTopOf="parent" >
 
         <ImageView
-            android:id="@+id/imageView_comment"
+            android:id="@+id/imageView_review_pfp"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:contentDescription="TODO"
@@ -72,7 +72,7 @@
     </androidx.cardview.widget.CardView>
 
     <RatingBar
-        android:id="@+id/ratingBar_comment"
+        android:id="@+id/ratingBar_review_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numStars="5"
