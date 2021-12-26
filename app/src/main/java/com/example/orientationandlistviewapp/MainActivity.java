@@ -36,18 +36,15 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicInteger;
 
-//TODO: fix the bug that happens when you remove the last element while an item is selected.
-
 public class MainActivity extends AppCompatActivity {
-    ListView listView_app;
-    ArrayList<Product> list_product;
-    Document document;
-    SearchView searchView;
-    Bundle savedInstanceState;
-    boolean isLandSpace, hasRotated;
-    Animation animation_bounce_app_list;
-    float percentage = 0;
-    int numAppsToShow;
+    private ListView listView_app;
+    private ArrayList<Product> list_product;
+    private Document document;
+    private SearchView searchView;
+    private Bundle savedInstanceState;
+    private boolean isLandSpace, hasRotated;
+    private float percentage = 0;
+    private int numAppsToShow;
 
 
     @Override
@@ -129,9 +126,8 @@ public class MainActivity extends AppCompatActivity {
         int count = 0;
         for (Element element: elements){
             int id = ++count;
-//            if (count == 2) break;
+            String url = "https://play.google.com" + element.select(".wXUyZd a").attr("href") + "&hl=en_US&gl=US";
 
-            String url = String.format("https://play.google.com%s&hl=en_US&gl=US", element.select(".wXUyZd a").attr("href"));
             new Thread(() -> {
                 try {
                     Document appPage = Jsoup.connect(url).get();
@@ -139,23 +135,25 @@ public class MainActivity extends AppCompatActivity {
                     Document appFullReviewPage = Jsoup.connect(url + "&showAllReviews=true").get();
                     percentage++;
                     list_product.add(new Product(id, appPage, appFullReviewPage));
+
                 } catch (HttpStatusException e) {
                     numAppsToShow--;
-                } catch (Exception e){
+
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }).start();
-
         }
 
         new Thread(() -> {
             Button button  = findViewById(R.id.button_search);
             while (list_product.size() < numAppsToShow) {
                 runOnUiThread(() -> {
-                    if ((percentage/(elements.size() * 2) * 100) == 0){
+                    float percent = (percentage/(elements.size() * 2) * 100);
+                    if (percent == 0){
                         button.setText("Searching...");
                     } else {
-                        button.setText((percentage/(elements.size() * 2) * 100) + "%");
+                        button.setText(percent + "%");
                     }
                 });
             }
@@ -179,9 +177,6 @@ public class MainActivity extends AppCompatActivity {
 
     void updateRadioGroup(RadioGroup radioGroup){
         ViewFlipper viewFlipper = findViewById(R.id.viewSwitcher);
-
-
-        animation_bounce_app_list = AnimationUtils.loadAnimation(this, R.anim.bounce_app_list);
 
         RadioButton button = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
         for (int i = 0; i < radioGroup.getChildCount(); i++){
