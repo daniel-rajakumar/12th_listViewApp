@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerUtils;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class SliderViewHolder extends RecyclerView.ViewHolder {
             String imageUrl = sliderPreview.getUrl();
             InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
             imageView.setImageDrawable(Drawable.createFromStream(inputStream, null));
-            
+
         } else {
             videoView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
                 @Override
