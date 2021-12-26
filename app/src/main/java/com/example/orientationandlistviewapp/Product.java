@@ -16,17 +16,13 @@ import java.util.ArrayList;
 
 public class Product implements Parcelable  {
     private int id;
-    private Document appPage, appFullReviewPage;
     private String name;
     private String author;
     private String rating;
     private Drawable image;
     private String info;
-    private String videoLink;
-    private ArrayList<String> imageLinks;
     private ArrayList<SliderPreview> sliderPreview;
     private ArrayList<UserReviews> userReviews;
-    private ListView listView;
     private static int selectedIndex = -1;
 
 
@@ -38,15 +34,11 @@ public class Product implements Parcelable  {
             this.id = id;
 
             // doc
-            this.appPage = appPage;
-            this.appFullReviewPage = appFullReviewPage;
             Elements elements1 = appPage.select("main.LXrl4c");
 
             // info
             this.info = elements1.select("div.DWPxHb span div").toString();
 
-//            Log.d("info", info);
-//
             // name
             this.name = elements1.select("h1.AHFaub").text();
 
@@ -62,19 +54,9 @@ public class Product implements Parcelable  {
             InputStream inputStream = (InputStream) (new URL(imageUrl).getContent());
             this.image = Drawable.createFromStream(inputStream, null);
 
-            //url
-//            Log.d("doc",
-//                  ".\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n." +
-////                    doc2.body().getElementsByTag("script")
-//                    doc2
-//            );
-
-
-
-            //comments
+            // userReview
             userReviews = new ArrayList<>();
             Elements elements2 = appFullReviewPage.body().getElementsByTag("script");
-
 
             for (int i = 0; i < elements2.size(); i++){
                 String str = elements2.get(i).toString();
@@ -94,56 +76,19 @@ public class Product implements Parcelable  {
 
 
                             userReviews.add(new UserReviews(userName, stars, link, comment));
-
-
-
-
-
-
-
-
-
-
-//                            String comment = arr2[5].substring(arr2[5].indexOf("\""), arr2[5].lastIndexOf("\""));
-//                            Log.d("doc", i + " -> " + Arrays.toString(arr2));
-//                            Log.d("doc",
-//                                    ".\nname: " + userName + "\n" +
-//                                         "link: " + link + "\n" +
-//                                         "comment: " + comment + "\n."
-//                            );
-//
-//                            String[] patter2 = pattern[1].split("]]],[0-9]+,null,");
-//                            Log.d("doc", patter2[1].split(",\\[[0-9]+,[0-9]+\\],[0-9]+,null,null,")[0]);
-
-
                         }
                     }
                 }
             }
 
-
-
-            mainActivity.runOnUiThread(() -> {
-//                listView = mainActivity.findViewById(R.id.listview_comment);
-//                listView.setAdapter(new CustomAdapter_customer(mainActivity, context, R.layout.adapter_layout_comments, userReviews));
-            });
-
-
-
-
-
-
-
-
             // video link
             this.sliderPreview = new ArrayList<>();
-            videoLink = appPage.select(".MMZjL.lgooh").attr("data-trailer-url");
-
+            String videoLink = appPage.select(".MMZjL.lgooh").attr("data-trailer-url");
 
 
 
             // image links
-            imageLinks = new ArrayList<>();
+            ArrayList<String> imageLinks = new ArrayList<>();
             Elements links = appPage.select("img.T75of.DYfLw");
 
 
@@ -158,8 +103,6 @@ public class Product implements Parcelable  {
             if (!videoLink.equals("")) {
                 imageLinks.remove(0);
             }
-
-
 
 
 
@@ -205,24 +148,12 @@ public class Product implements Parcelable  {
         return info;
     }
 
-    public Document getDoc() {
-        return appPage;
-    }
-
     public String getRating() {
         return rating;
     }
 
     public Drawable getImage() {
         return image;
-    }
-
-    public String getVideoLink() {
-        return videoLink;
-    }
-
-    public ArrayList<String> getImageLinks() {
-        return imageLinks;
     }
 
     public ArrayList<SliderPreview> getSliderPreview() {
