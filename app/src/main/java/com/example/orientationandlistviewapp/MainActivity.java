@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (Product.getSelectedIndex() == -1)  {
             textView_by.setText("By: ");
-            textView_rating.setText(": Rating");
+            textView_rating.setText(" :Rating");
             if (mainActivity.isLandSpace){
                 textView_info.setText("");
                 viewPager.setAdapter(null);
