@@ -13,11 +13,14 @@ import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -153,6 +156,15 @@ public class MainActivity extends AppCompatActivity {
     void updateRadioGroup(RadioGroup radioGroup){
         ViewFlipper viewFlipper = findViewById(R.id.viewSwitcher);
 
+
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        RadioButton button = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
+        for (int i = 0; i < radioGroup.getChildCount(); i++){
+            button.clearAnimation();
+        }
+        button.startAnimation(animation);
+
+
         viewFlipper.setDisplayedChild(
                 radioGroup.indexOfChild(
                         findViewById(
@@ -160,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
                         )
                 )
         );
+
 
         for (int i = 0; i < radioGroup.getChildCount(); i++){
             radioGroup.getChildAt(i).setBackgroundTintList(this.getColorStateList(R.color.main_font_tint));
