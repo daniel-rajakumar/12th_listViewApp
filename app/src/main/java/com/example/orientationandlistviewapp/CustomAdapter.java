@@ -30,21 +30,14 @@ class CustomAdapter extends ArrayAdapter<Product> {
         this.context = context;
         this.xmlResource = resource;
         this.list = objects;
-
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View adapterLayout = layoutInflater.inflate(xmlResource, null);
-        LinearLayout linearLayout = adapterLayout.findViewById(R.id.linearLayout);
-//        Log.d("custom", linearLayout.toString());
     }
 
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-//            return super.getView(position, convertView, parent);
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View adapterLayout = layoutInflater.inflate(xmlResource, null);
-
 
         Button button = adapterLayout.findViewById(R.id.button);
         TextView textView = adapterLayout.findViewById(R.id.textView);
@@ -62,7 +55,7 @@ class CustomAdapter extends ArrayAdapter<Product> {
         imageView.setImageDrawable(product.getImage());
 
         if (Product.getSelectedIndex() == position){
-                linearLayout.setBackground(adapterLayout.getResources().getDrawable(R.drawable.custom_applist_selected));
+                linearLayout.setBackgroundResource(R.drawable.custom_applist_selected);
         }
 
         button.setOnClickListener(view -> {
