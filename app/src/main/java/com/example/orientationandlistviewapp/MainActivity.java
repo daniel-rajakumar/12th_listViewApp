@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -37,13 +36,9 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     ArrayList<Product> list;
     Document document;
-    SearchView editText;
-    Button button;
-    String name = "news";
-    String url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
+    SearchView searchView;
     Bundle savedInstanceState;
-    boolean isLandSpace;
-    RadioGroup radioGroup;
+    boolean isLandSpace, hasRotated;
 
 
     @Override
@@ -52,11 +47,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         this.savedInstanceState = savedInstanceState;
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
+        updatePermissions();
 
         isLandSpace = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        hasRotated = savedInstanceState != null;
 
         try {
             ready();
@@ -68,32 +62,32 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    void updatePermissions(){
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+    }
+
 
     void ready() throws IOException, InterruptedException {
         listView = findViewById(R.id.listView);
-        if (savedInstanceState == null){
-            list = new ArrayList<>();
-        } else {
+        if (hasRotated){
             list = (ArrayList<Product>) savedInstanceState.get("list");
+        } else {
+            list = new ArrayList<>();
         }
-        editText = findViewById(R.id.editTextTextPersonName3);
-        button = findViewById(R.id.button3);
 
         modifySearchBar();
 
-        if (savedInstanceState == null){
-            getWebsite();
-
-        } else {
+        if (hasRotated) {
             listView.setAdapter(new CustomAdapter(this, this, R.layout.adapter_layout, list));
         }
-
     }
 
     void modifySearchBar(){
-        EditText searchEditText = editText.findViewById(androidx.appcompat.R.id.search_src_text);
-        ImageView searchIcon = editText.findViewById(androidx.appcompat.R.id.search_button);
-        ImageView closeIcon = editText.findViewById(androidx.appcompat.R.id.search_close_btn);
+        searchView = findViewById(R.id.editTextTextPersonName3);
+        EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        ImageView searchIcon = searchView.findViewById(androidx.appcompat.R.id.search_button);
+        ImageView closeIcon = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
 
         searchEditText.setTextColor(getResources().getColor(R.color.main_font));
         searchEditText.setHintTextColor(getResources().getColor(R.color.main_font));
@@ -106,9 +100,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void getWebsite() throws InterruptedException {
+    private void connectWithPlayStoreAppLists(String appName) throws InterruptedException {
         Thread thread = new Thread(() -> {
             try {
+                String url = "https://play.google.com/store/search?q=" + appName + "&c=apps&hl=en_US&gl=US";
                 document = Jsoup.connect(url).get();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -118,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         while (thread.isAlive()) ;
     }
 
-    void updateList() throws IOException {
+    void updateAppListView() throws IOException {
         list.clear();
         Elements elements = document.select("div.Vpfmgd");
         int count = 0;
@@ -129,9 +124,9 @@ public class MainActivity extends AppCompatActivity {
             String url = String.format("https://play.google.com%s&hl=en_US&gl=US", element.select(".wXUyZd a").attr("href"));
             new Thread(() -> {
                 try {
-                    Document doc = Jsoup.connect(url).get();
-                    Document doc2 = Jsoup.connect(url + "&showAllReviews=true").get();
-                    list.add(new Product(this, this, id, doc, doc2));
+                    Document appPage = Jsoup.connect(url).get();
+                    Document appFullReviewPage = Jsoup.connect(url + "&showAllReviews=true").get();
+                    list.add(new Product(this, id, appPage, appFullReviewPage));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -178,21 +173,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     void setListeners() throws IOException {
-//        if (savedInstanceState != null && isLandSpace && (selectedProduct != null)){
-//            textView_info.setMovementMethod(new ScrollingMovementMethod());
-//            textView_info.setText(Html.fromHtml(selectedProduct.getInfo(), Html.FROM_HTML_MODE_COMPACT));
-//            viewPager2.setAdapter(new SliderAdapter(selectedProduct.getSliderPreview(), viewPager2));
-//        }
-        if (savedInstanceState != null){
+        if (hasRotated){
             updateSelectedAppInfo(this, list);
         }
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
             if (Product.getSelectedIndex() != -1){
-                getViewByPosition(Product.getSelectedIndex(), listView) .setBackground(getResources().getDrawable(R.drawable.custom_applist));
+                getViewByPosition(Product.getSelectedIndex(), listView).setBackgroundResource(R.drawable.custom_applist);
             }
             Product.setSelectedIndex(position);
-            view.setBackground(getResources().getDrawable(R.drawable.custom_applist_selected));
+            view.setBackgroundResource(R.drawable.custom_applist_selected);
             updateSelectedAppInfo(this, list);
         });
     }
@@ -243,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
         int firstListItemPosition = listView.getFirstVisiblePosition();
         int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
 
-        if (position < firstListItemPosition || position > lastListItemPosition ) {
+        if (position < firstListItemPosition || position > lastListItemPosition) {
             return listView.getAdapter().getView(position, null, listView);
         } else {
             int childIndex = position - firstListItemPosition;
@@ -252,12 +242,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void go() {
+        Button button = findViewById(R.id.button3);
         button.setOnClickListener(v -> {
-            name = editText.getQuery().toString();
-            url = "https://play.google.com/store/search?q=" + name + "&c=apps&hl=en_US&gl=US";
+            String appName = searchView.getQuery().toString();
             try {
-                getWebsite();
-                updateList();
+                connectWithPlayStoreAppLists(appName);
+                updateAppListView();
                 Product.setSelectedIndex(-1);
                 updateSelectedAppInfo(this, list);
             } catch (InterruptedException | IOException e) {

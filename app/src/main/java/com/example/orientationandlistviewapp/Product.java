@@ -1,10 +1,8 @@
 package com.example.orientationandlistviewapp;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.View;
 import android.widget.ListView;
 
 import org.jsoup.nodes.Document;
@@ -18,7 +16,7 @@ import java.util.ArrayList;
 
 public class Product implements Parcelable  {
     private int id;
-    private Document doc, doc2;
+    private Document appPage, appFullReviewPage;
     private String name;
     private String author;
     private String rating;
@@ -33,15 +31,16 @@ public class Product implements Parcelable  {
 
 
 
-    Product(MainActivity mainActivity, Context context, int id, Document doc, Document doc2) throws IOException {
+    Product(MainActivity mainActivity, int id, Document appPage, Document appFullReviewPage) throws IOException {
+
         try {
             // id
             this.id = id;
 
             // doc
-            this.doc = doc;
-            this.doc2 = doc2;
-            Elements elements1 = doc.select("main.LXrl4c");
+            this.appPage = appPage;
+            this.appFullReviewPage = appFullReviewPage;
+            Elements elements1 = appPage.select("main.LXrl4c");
 
             // info
             this.info = elements1.select("div.DWPxHb span div").toString();
@@ -74,7 +73,7 @@ public class Product implements Parcelable  {
 
             //comments
             userReviews = new ArrayList<>();
-            Elements elements2 = doc2.body().getElementsByTag("script");
+            Elements elements2 = appFullReviewPage.body().getElementsByTag("script");
 
 
             for (int i = 0; i < elements2.size(); i++){
@@ -138,14 +137,14 @@ public class Product implements Parcelable  {
 
             // video link
             this.sliderPreview = new ArrayList<>();
-            videoLink = doc.select(".MMZjL.lgooh").attr("data-trailer-url");
+            videoLink = appPage.select(".MMZjL.lgooh").attr("data-trailer-url");
 
 
 
 
             // image links
             imageLinks = new ArrayList<>();
-            Elements links = doc.select("img.T75of.DYfLw");
+            Elements links = appPage.select("img.T75of.DYfLw");
 
 
             for (Element element: links){
@@ -207,7 +206,7 @@ public class Product implements Parcelable  {
     }
 
     public Document getDoc() {
-        return doc;
+        return appPage;
     }
 
     public String getRating() {
