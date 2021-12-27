@@ -106,9 +106,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void connectWithPlayStoreAppLists(String appName) throws InterruptedException {
+
         Thread thread = new Thread(() -> {
             try {
-                String url = "https://play.google.com/store/search?q=" + appName + "&c=apps&hl=en_US&gl=US";
+//                if (appName.isEmpty()) appName = "memes";
+                String url = "https://play.google.com/store/search?q=" + (appName.isEmpty() ? "memes" : appName) + "&c=apps&hl=en_US&gl=US";
                 document = Jsoup.connect(url).get();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -214,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
         listView_app.setOnItemClickListener((parent, view, position, id) -> {
             if (Product.getSelectedIndex() != -1){
                 getViewByPosition(Product.getSelectedIndex(), listView_app).setBackgroundResource(R.drawable.custom_applist);
+                view.clearAnimation();
             }
             if (position == Product.getSelectedIndex()) {
                 Product.setSelectedIndex(-1);
@@ -223,11 +226,6 @@ public class MainActivity extends AppCompatActivity {
                 Product.setSelectedIndex(position);
                 view.setBackgroundResource(R.drawable.custom_applist_selected);
             }
-            if (view.getAnimation() != null){
-                Log.d("anim", " -> animating -> " + view.getAnimation().hasEnded());
-
-            }
-
             updateSelectedAppInfo(this, list_product);
         });
     }
