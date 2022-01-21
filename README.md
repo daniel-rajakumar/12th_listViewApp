@@ -1,3 +1,3 @@
 # 12th_listViewApp
 
-![hello world](demo.gif)
+![demo of the app](demo.gif)
