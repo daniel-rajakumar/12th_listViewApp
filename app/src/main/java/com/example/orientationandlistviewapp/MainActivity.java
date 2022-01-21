@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                     list_product.sort(Comparator.comparingInt(Product::getId));
                     listView_app.setAdapter(new CustomAdapterApp(this, this, R.layout.adapter_layout, list_product));
                     button.setText("Search");
-                } catch (NullPointerException e){ }
+                } catch (NullPointerException ignored){ }
             });
         }).start();
     }
@@ -174,9 +174,7 @@ public class MainActivity extends AppCompatActivity {
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
 
         updateRadioGroup(radioGroup);
-        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            updateRadioGroup(radioGroup);
-        });
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> updateRadioGroup(radioGroup));
     }
 
     void updateRadioGroup(RadioGroup radioGroup){
@@ -198,10 +196,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         for (int i = 0; i < radioGroup.getChildCount(); i++){
-            radioGroup.getChildAt(i).setBackgroundTintList(this.getColorStateList(R.color.main_font_tint));
+            radioGroup.getChildAt(i)
+                      .setBackgroundTintList(this.getColorStateList(R.color.main_font_tint));
         }
 
-        radioGroup.findViewById(radioGroup.getCheckedRadioButtonId()).setBackgroundTintList(this.getColorStateList(R.color.main_font));
+        radioGroup.findViewById(radioGroup.getCheckedRadioButtonId())
+                  .setBackgroundTintList(this.getColorStateList(R.color.main_font));
     }
 
 
@@ -228,12 +228,13 @@ public class MainActivity extends AppCompatActivity {
             }
             updateSelectedAppInfo(this, list_product);
         });
+
     }
 
 
 
 
-    public static void updateSelectedAppInfo(MainActivity mainActivity, ArrayList<Product> list){
+    public static void updateSelectedAppInfo(MainActivity mainActivity, ArrayList<Product> list) {
         TextView textView_info = mainActivity.findViewById(R.id.textView_info);
         TextView textView_rating = mainActivity.findViewById(R.id.textView_rating);
         TextView textView_by = mainActivity.findViewById(R.id.textView_by);
